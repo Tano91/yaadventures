@@ -1,8 +1,27 @@
-import React from 'react'
-
 function Header() {
   return (
-    <div>Header</div>
+    <div>
+      <h1>I am Header</h1>
+
+      {/* Left */}
+      <div>
+
+      </div>
+
+      {/* Middle */}
+
+      <div>
+        
+      </div>
+
+      {/* Right */}
+
+      <div>
+        
+      </div>
+    </div>
+
+    
   )
 }
 

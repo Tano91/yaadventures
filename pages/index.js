@@ -1,20 +1,16 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-
-const inter = Inter({ subsets: ['latin'] })
+import Header from "@/components/Header"
+import Head from "next/head"
 
 export default function Home() {
   return (
     <div className=''>
-      <head>
+      <Head>
         <title>Yaadventures - Tano</title>
         <link rel="icon" href="/favicon.ico" />
-      </head>
+      </Head>
 
-      <h1>Let's Build YaadVentures</h1>
-
-      {/* Header Here */}
-
+      <Header/>
+      
       {/* Banner Here */}
 
 
