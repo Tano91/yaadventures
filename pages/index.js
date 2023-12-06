@@ -1,4 +1,5 @@
 import Banner from "@/components/Banner"
+import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import LargeCard from "@/components/LargeCard"
 import MediumCard from "@/components/MediumCard"
@@ -59,14 +60,15 @@ export default function Home({exploreData, cardsData}) {
         </section>
 
         {/* Section 3 */}
-
         <LargeCard 
           img='https://res.cloudinary.com/dcottdki8/image/upload/v1701023180/yaadventures/landscapebanner_2.jpg'
-          title='Hidden Adventures'
-          description='All the best YaadVentures'
-          buttonText='Venture Forth!'
+          title='Top Picks'
+          description='Our Highest Rated YaadVentures'
+          buttonText='Show Me!'
         />
       </main>
+
+      <Footer />
     </div>
   )
 }

@@ -7,8 +7,11 @@ const LargeCard = ({ img, title, description, buttonText}) => {
         <Image
         className="brightness-50 rounded-2xl contrast-125"
             src={img}
+            priority
             fill     
+            sizes="500px"
             style={{objectFit: 'cover'}}
+            alt="Top Rated Image"
         />
         </div>
 

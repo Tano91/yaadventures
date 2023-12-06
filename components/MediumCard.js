@@ -9,6 +9,8 @@ const MediumCard = ({img, title}) => {
                 className="rounded-2xl"
                 src={img}
                 fill
+                sizes="500px"
+                alt="Adventures Image"
             />
         </div>
 

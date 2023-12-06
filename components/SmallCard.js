@@ -12,6 +12,8 @@ const SmallCard = ({img, parish, listings}) => {
             className="rounded-lg"
             src={img}
             fill
+            sizes="100px"
+            alt="Parish Image"
             />
         </div>
         {/* Right */}
