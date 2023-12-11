@@ -21,5 +21,3 @@ const MediumCard = ({img, title}) => {
 }
 
 export default MediumCard
-
-// 1:40:20

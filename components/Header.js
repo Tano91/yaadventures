@@ -7,16 +7,20 @@ import {
   } from '@heroicons/react/24/solid'
 import yvFull_G from '@/public/yvFull_G.png'
 import { useState } from "react"
+import { useRouter } from "next/router"
 
 function Header() {
   const [searchInput, setSearchInput] = useState('')
-  console.log(searchInput)
+  
+  const router = useRouter()
 
   return (
     <header className="sticky to-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
 
       {/* Left - Logo */}
-      <div className="relative flex items-center h-10 cursor-pointer my-auto">
+      <div
+      onClick={ ()=>router.push('/') } 
+      className="relative flex items-center h-10 cursor-pointer my-auto">
         <Image
           src={yvFull_G}
           fill

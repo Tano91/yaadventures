@@ -20,7 +20,8 @@ const SmallCard = ({img, parish, listings}) => {
 
         <div>
             <h2><b>{parish}</b> </h2>
-            <h3 className="text-gray-400"> <b>{listings}</b> Listings</h3>
+            <h3 className="text-sm">
+              <b>{listings}</b> Listings</h3>
         </div>
         
     </div>

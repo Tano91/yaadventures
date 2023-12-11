@@ -73,13 +73,13 @@ export default function Home({exploreData, cardsData}) {
   )
 }
 
-
+// ISR For Homepage Here
 export async function getStaticProps(){
   const exploreData = await fetch('https://www.jsonkeeper.com/b/0OO9')
   .then(res => res.json()
   );
 
-  const cardsData = await fetch('https://www.jsonkeeper.com/b/NKTP')
+  const cardsData = await fetch('https://www.jsonkeeper.com/b/1FAQ')
   .then(res => res.json()
   );
 
@@ -88,7 +88,9 @@ export async function getStaticProps(){
       exploreData,
       cardsData
     },
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 10 seconds
+    revalidate: 100, // In seconds
   }
 }
-
-// 1:53:23

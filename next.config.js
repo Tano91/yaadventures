@@ -23,6 +23,18 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'commons.wikimedia.org'
+      },
+      {
+        protocol: 'https',
+        hostname: 'travelaroundjamaica.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.simpleviewinc.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'greengrottocavesja.com'
       }
     ]
   }
