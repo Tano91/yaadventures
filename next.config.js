@@ -37,6 +37,9 @@ const nextConfig = {
         hostname: 'greengrottocavesja.com'
       }
     ]
+  },
+  env:{
+    mapbox_key: 'pk.eyJ1IjoidGFubzkxIiwiYSI6ImNsM2F2bXB6bTAweGEzZWsyYTRrYnlqc2MifQ.fLRKfXcMPTDTtB3YafrNkA'
   }
 }
 

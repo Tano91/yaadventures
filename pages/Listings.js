@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import InfoCard from '@/components/InfoCard'
+import Map from '@/components/Map'
 
 const Listings = ({allListings}) => {
 
@@ -49,6 +50,10 @@ const Listings = ({allListings}) => {
 
             </section> 
 
+            <section className='hidden xl:inline-flex xl:min-w-[600px]'>
+              <Map />
+            </section>
+
         </main>
 
         <Footer />
@@ -67,3 +72,5 @@ export async function getServerSideProps(){
     }
   }
 }
+
+// 3:50:28

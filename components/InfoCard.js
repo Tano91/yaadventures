@@ -14,6 +14,8 @@ const InfoCard = ({index, img, parish, address, title, description, type, star, 
                 fill
                 style={{objectFit: 'cover'}}
                 alt={`${title} - Image`}
+                priority
+                sizes="500px"
             />
         </div>
 
