@@ -5,8 +5,6 @@ import Map from '@/components/Map'
 
 const Listings = ({allListings}) => {
 
-  console.log(allListings)
-
   return (
     <div className='h-screen'>
         <Header />
@@ -51,7 +49,7 @@ const Listings = ({allListings}) => {
             </section> 
 
             <section className='hidden xl:inline-flex xl:min-w-[600px]'>
-              <Map />
+              <Map allListings={allListings} />
             </section>
 
         </main>
