@@ -1,7 +1,7 @@
 import Footer from '@/components/Footer'
 import Header from '@/components/Header'
 import InfoCard from '@/components/InfoCard'
-import Map from '@/components/Map'
+import Map from '@/components/MAPBOX TESTS/Map'
 
 const Listings = ({allListings}) => {
 
@@ -48,9 +48,10 @@ const Listings = ({allListings}) => {
 
             </section> 
 
-            <section className='hidden xl:inline-flex xl:min-w-[600px]'>
+                  {/* Map Section. Don't Need this, I think */}
+            {/* <section className='hidden xl:inline-flex xl:min-w-[600px]'>
               <Map allListings={allListings} />
-            </section>
+            </section> */}
 
         </main>
 
