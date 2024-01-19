@@ -5,7 +5,6 @@ import LargeCard from "@/components/LargeCard";
 import MediumCard from "@/components/MediumCard";
 import SmallCard from "@/components/SmallCard";
 import Head from "next/head";
-import ImageUpload from "@/components/ImageUpload";
 
 export default function Home({ exploreData, cardsData }) {
   return (
@@ -18,8 +17,6 @@ export default function Home({ exploreData, cardsData }) {
 
       <Header />
       <Banner />
-
-      <ImageUpload />
 
       <main className="max-w-7xl mx-auto px-8 sm:px-16">
         {/* Section - 1 */}

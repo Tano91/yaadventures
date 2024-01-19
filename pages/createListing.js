@@ -10,12 +10,17 @@ import InputField from "@/components/InputField";
 import FormButtonGroup from "@/components/FormButtonGroup";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar } from "react-step-progress-bar";
+import ImageUpload from "@/components/ImageUpload";
 
 const maxSteps = 5;
 
 const createListing = () => {
   const [formStep, setFormStep] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null);
+
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [imagesUploaded, setImagesUploaded] = useState(false);
+  const [isImageUploadValid, setIsImageUploadValid] = useState(false);
 
   const stepValidationSchemas = [
     yup.object().shape({
@@ -49,11 +54,12 @@ const createListing = () => {
     resolver: yupResolver(stepValidationSchemas[formStep - 1]),
   });
 
-  // Modify your completeFormStep function to run validation before proceeding
+  // Modify completeFormStep function to run validation before proceeding
   const completeFormStep = async () => {
     const result = await trigger();
-    if (result) {
+    if (result || (formStep === 4 && isImageUploadValid)) {
       setFormStep((cur) => cur + 1);
+      setIsImageUploadValid(false);
     }
   };
 
@@ -74,7 +80,7 @@ const createListing = () => {
     } else {
       return (
         <button
-          disabled={!isValid}
+          disabled={formStep !== 4 ? !isValid : !isImageUploadValid}
           type="button"
           className="flex content-center mt-6 bg-emerald-600 text-white rounded-xl px-8 py-4 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-emerald-800 hover:scale-105 active:scale-90  transform transition duration-300 ease-out"
           onClick={completeFormStep}
@@ -90,7 +96,27 @@ const createListing = () => {
     setFormStep((cur) => cur - 1);
   };
 
-  const submitForm = (values) => {
+  const submitForm = async (values) => {
+    // Handle image upload
+    for (let i = 0; i < selectedFiles.length; i++) {
+      const file = selectedFiles[i];
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "yaadventures_upload_present");
+
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_CLOUDINARY_API}`,
+          formData
+        );
+        values.imageLink = res.data.secure_url; // Use secure_url from response data
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+    }
+
+    // Handle Pushinh to Firebase here!
     console.log(values);
   };
 
@@ -211,18 +237,11 @@ const createListing = () => {
               </div>
             )}
             {formStep === 4 && (
-              <InputField
-                fields={[
-                  {
-                    id: "imageLink",
-                    name: "imageLink",
-                    label: "imageLink",
-                    type: "text",
-                    placeholder: "Image Upload To Go Here (COMING SOON)",
-                  },
-                ]}
-                register={register}
+              <ImageUpload
                 errors={errors}
+                selectedFiles={selectedFiles}
+                setSelectedFiles={setSelectedFiles}
+                setIsImageUploadValid={setIsImageUploadValid}
               />
             )}
           </form>
