@@ -1,6 +1,5 @@
 import Banner from "@/components/Banner";
 import Footer from "@/components/Footer";
-import Header from "@/components/Header";
 import LargeCard from "@/components/LargeCard";
 import MediumCard from "@/components/MediumCard";
 import SmallCard from "@/components/SmallCard";
@@ -12,10 +11,9 @@ export default function Home({ exploreData, cardsData }) {
       {/* convert to 32x32 favicon */}
       <Head>
         <link rel="icon" href="/yvIcon_G.png" />
-        <title>Yaadventures - Tano</title>
+        <title>Yaadventures - Home</title>
       </Head>
 
-      <Header />
       <Banner />
 
       <main className="max-w-7xl mx-auto px-8 sm:px-16">

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Header from "@/components/Header";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline";
@@ -11,6 +11,8 @@ import FormButtonGroup from "@/components/FormButtonGroup";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar } from "react-step-progress-bar";
 import ImageUpload from "@/components/ImageUpload";
+import axios from "axios";
+import Head from "next/head";
 
 const maxSteps = 5;
 
@@ -19,6 +21,7 @@ const createListing = () => {
   const [selectedOption, setSelectedOption] = useState(null);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [imageUrls, setImageUrls] = useState([]);
   const [imagesUploaded, setImagesUploaded] = useState(false);
   const [isImageUploadValid, setIsImageUploadValid] = useState(false);
 
@@ -59,7 +62,6 @@ const createListing = () => {
     const result = await trigger();
     if (result || (formStep === 4 && isImageUploadValid)) {
       setFormStep((cur) => cur + 1);
-      setIsImageUploadValid(false);
     }
   };
 
@@ -121,8 +123,12 @@ const createListing = () => {
   };
 
   return (
-    <div className="min-h-screen">
-      <Header />
+    <div className="h-90">
+      {/* convert to 32x32 favicon */}
+      <Head>
+        <link rel="icon" href="/yvIcon_G.png" />
+        <title>Yaadventures - Create Listing</title>
+      </Head>
 
       {/* Container Div */}
       <div className="container mx-auto px-5 ">
@@ -242,6 +248,8 @@ const createListing = () => {
                 selectedFiles={selectedFiles}
                 setSelectedFiles={setSelectedFiles}
                 setIsImageUploadValid={setIsImageUploadValid}
+                imageUrls={imageUrls}
+                setImageUrls={setImageUrls}
               />
             )}
           </form>
@@ -255,6 +263,25 @@ const createListing = () => {
               Is This Information Accurate?:
             </h1>
             <pre>{JSON.stringify(watch(), null, 2)}</pre>
+            <div className="grid grid-cols-5 gap-4 pt-3">
+              {selectedFiles &&
+                selectedFiles.map((file, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col space-y-5 items-center justify-between"
+                  >
+                    <div className="">
+                      <Image
+                        className="border-2 border-gray-600 rounded-xl"
+                        src={URL.createObjectURL(file)}
+                        alt="Preview-Final"
+                        width={200}
+                        height={200}
+                      />
+                    </div>
+                  </div>
+                ))}
+            </div>
           </div>
         )}
 
