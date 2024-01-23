@@ -16,7 +16,7 @@ function Header() {
   const router = useRouter();
 
   return (
-    <header className="sticky to-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
+    <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
       {/* Left - Logo */}
       <div
         onClick={() => router.push("/")}

@@ -13,17 +13,38 @@ import { ProgressBar } from "react-step-progress-bar";
 import ImageUpload from "@/components/ImageUpload";
 import axios from "axios";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { addDoc, serverTimestamp } from "firebase/firestore";
+import { listingsColRef } from "../firebase/config";
 
 const maxSteps = 5;
 
 const createListing = () => {
+  const router = useRouter();
+
   const [formStep, setFormStep] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null);
-
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
   const [imagesUploaded, setImagesUploaded] = useState(false);
   const [isImageUploadValid, setIsImageUploadValid] = useState(false);
+
+  // States for data below!:
+  const [yvType, setyvType] = useState("");
+  const [yvTitle, setyvTitle] = useState("");
+  const [yvDescription, setyvDescription] = useState("");
+  const [yvPrice, setyvPrice] = useState("");
+  const [yvAddress, setyvAddress] = useState("");
+  const [yvCity, setyvCity] = useState("");
+  const [yvParish, setyvParish] = useState("");
+  const [yvImages, setyvImages] = useState([]);
+  const [yvRatings, setyvRatings] = useState([]);
+  const [yvScore, setyvScore] = useState(0);
+  const [yvFavourited, setyvFavourited] = useState([]);
+  const [yvUser, setyvUser] = useState("Admin");
+
+  const [isPending, setIsPending] = useState(false);
 
   const stepValidationSchemas = [
     yup.object().shape({
@@ -71,6 +92,7 @@ const createListing = () => {
     if (formStep >= maxSteps) {
       return (
         <button
+          disabled={isPending}
           type="button"
           className="flex content-center  mt-6 bg-emerald-600 text-white rounded-xl px-8 py-4 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-emerald-800 hover:scale-105 active:scale-90  transform transition duration-300 ease-out"
           onClick={handleSubmit(submitForm)}
@@ -99,6 +121,7 @@ const createListing = () => {
   };
 
   const submitForm = async (values) => {
+    setIsPending(true);
     // Handle image upload
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
@@ -112,18 +135,80 @@ const createListing = () => {
           `${process.env.NEXT_PUBLIC_CLOUDINARY_API}`,
           formData
         );
-        values.imageLink = res.data.secure_url; // Use secure_url from response data
+        if (!values.imageLinks) {
+          values.imageLinks = [];
+        }
+        values.imageLinks.push(res.data.secure_url); // Append URL to imageLinks array
+        // Use secure_url from response data
       } catch (error) {
-        console.error("Error uploading image:", error);
+        toast.error(`Could Not Upload Images! Try Again!`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        console.error("Error uploading Image:", error);
+        return;
       }
     }
 
-    // Handle Pushinh to Firebase here!
-    console.log(values);
+    // Handle Pushing to Firebase here!
+    const newListing = {
+      type: values.selectedOption,
+      title: values.title,
+      description: values.description,
+      price: values.price,
+      address: values.address,
+      city: values.city,
+      parish: values.parish,
+      images: values.imageLinks,
+
+      yvUser,
+
+      yvScore,
+      yvFavourited,
+      yvRatings,
+      createdAt: serverTimestamp(),
+    };
+
+    await addDoc(listingsColRef, newListing)
+      .then(() => {
+        toast.success(`Listing Added!`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        setIsPending(false);
+        router.push("/");
+      })
+      .catch((error) => {
+        toast.error(`Error With Adding Listing`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        console.log(error);
+      });
+
+    // console.log(values);
   };
 
   return (
-    <div className="h-90">
+    <div className="pb-48">
       {/* convert to 32x32 favicon */}
       <Head>
         <link rel="icon" href="/yvIcon_G.png" />
@@ -131,7 +216,7 @@ const createListing = () => {
       </Head>
 
       {/* Container Div */}
-      <div className="container mx-auto px-5 ">
+      <div className="mx-auto px-5">
         {/* Form Div */}
         <div className="flex justify-center">
           <form onSubmit={handleSubmit(submitForm)}>
@@ -285,16 +370,18 @@ const createListing = () => {
           </div>
         )}
 
-        <div className="z-0 absolute bottom-0 left-0 right-0 mx-auto">
+        {/* Buttons Footer */}
+        <div className="fixed bottom-0 left-0 right-0 z-500 bg-white p-0">
           <ProgressBar
             percent={(formStep / maxSteps) * 100}
             filledBackground={"#16a34a"}
           />
-          <div className="flex justify-between bg-white pb-5 px-10">
+          <div className="flex justify-between  pb-5 px-10">
             {formStep <= maxSteps && (
               <div className="flex items-center">
                 {formStep > 1 && (
                   <button
+                    disabled={isPending}
                     className="flex content-center mt-6 bg-gray-600 text-white rounded-xl px-8 py-4 disabled:bg-gray-400 disabled:cursor-not-allowed hover:bg-gray-800 hover:scale-105 active:scale-90  transform transition duration-300 ease-out"
                     type="button"
                     onClick={goToPreviousStep}

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
+import { PhotoIcon } from "@heroicons/react/24/solid";
 
 function ImageUpload({
   errors,
@@ -17,7 +18,16 @@ function ImageUpload({
     // Check if the number of total selected files is greater than 5
     if (totalFiles > 5) {
       // Prevent the selection of additional files
-      toast.error("You can only select up to 5 images!");
+      toast.error(`You Can Only Select 5 Images!`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
       event.target.value = "";
       return;
     }
@@ -41,7 +51,16 @@ function ImageUpload({
           e.preventDefault();
           const newFiles = Array.from(e.dataTransfer.files);
           if (selectedFiles.length + newFiles.length > 5) {
-            toast.error("You can only select up to 5 images!");
+            toast.error(`You Can Only Select 5 Images!`, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
             return;
           }
           setSelectedFiles([...selectedFiles, ...newFiles]);
@@ -50,7 +69,7 @@ function ImageUpload({
           setImageUrls([...imageUrls, ...urls]);
         }}
       >
-        Drop Images Here!
+        <PhotoIcon className="h-5" /> Drop Images Here!
         <input
           id="upload"
           name="upload"
