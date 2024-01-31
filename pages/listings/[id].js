@@ -8,8 +8,9 @@ import { getDocs } from "firebase/firestore";
 import formatDateTime from "@/components/formatDateTime";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { StarIcon } from "@heroicons/react/24/solid";
 import ImageDisplay from "@/components/ImageDisplay";
-import { StarIcon, HeartIcon } from "@heroicons/react/24/solid";
+import ReviewsDisplay from "@/components/ReviewsDisplay";
 
 export async function getServerSideProps(context) {
   const id = context.params.id;
@@ -35,7 +36,9 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      listing: { ...data, id: docRef.id, createdAt, updatedAt },
+      listing: JSON.parse(
+        JSON.stringify({ ...data, id: docRef.id, createdAt, updatedAt })
+      ),
       // users:{...dataUsers}
     },
   };
@@ -59,10 +62,10 @@ const listingDetails = ({ listing }) => {
   };
   return (
     <>
-      <Head>
+      {/* <Head>
         <link rel="icon" href="/yvIcon_G.png" />
         <title>Yaadventures - {listing.title}</title>
-      </Head>
+      </Head> */}
 
       <div className="container pt-5 pr-2 pl-2 mx-auto flex flex-col">
         <div className="container pr-2 pl-2 mx-auto flex flex-col items-center">
@@ -118,87 +121,8 @@ const listingDetails = ({ listing }) => {
         </div>
 
         {/* Reviews Section */}
-        <section className="pt-5 pb-5 border-b border-gray-300">
-          <p className="flex items-center">
-            <StarIcon className="h-8 inline-block text-black pr-1" />
-            <b className="text-2xl">
-              {listing.yvScore} ·
-              <span className="pl-1 cursor-pointer text-2xl">
-                {listing.yvRatings.length} Reviews
-              </span>
-            </b>
-          </p>
-          <div className="mt-5 border border-gray-300 rounded-2xl p-5">
-            <p className="flex items-center">
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-gray-300" />
-              <span className="text-lg pl-2"> · </span>
-              <span className="text-sm pl-2"> 2 weeks ago</span>
-            </p>
-            <p>
-              The place is definitely a hidden gem! I love this place! I can't
-              believe how great it is! You really should go!
-            </p>
-            {/* Username */}
-            <div className="mt-5 flex items-center">
-              <div className="relative w-7 h-7 overflow-hidden bg-gray-400 rounded-full ">
-                <svg
-                  className="absolute w-9 h-9 text-gray-200 -left-1"
-                  fillRule="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </div>
-              <p className="pl-2 text-sm">
-                <b>{listing.yvUser}</b>
-              </p>
-            </div>
-          </div>
-          <div className="mt-5 border border-gray-300 rounded-2xl p-5">
-            <p className="flex items-center">
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-gray-300" />
-              <span className="text-lg pl-2"> · </span>
-              <span className="text-sm pl-2"> 2 weeks ago</span>
-            </p>
-            <p>
-              The place is definitely a hidden gem! I love this place! I can't
-              believe how great it is! You really should go!
-            </p>
-            {/* Username */}
-            <div className="mt-5 flex items-center">
-              <div className="relative w-7 h-7 overflow-hidden bg-gray-400 rounded-full ">
-                <svg
-                  className="absolute w-9 h-9 text-gray-200 -left-1"
-                  fillRule="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                    clipRule="evenodd"
-                  ></path>
-                </svg>
-              </div>
-              <p className="pl-2 text-sm">
-                <b>{listing.yvUser}</b>
-              </p>
-            </div>
-          </div>
-        </section>
+
+        <ReviewsDisplay listing={listing} />
       </div>
     </>
   );
