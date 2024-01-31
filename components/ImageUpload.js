@@ -15,10 +15,10 @@ function ImageUpload({
     let newFiles = Array.from(event.target.files);
     let totalFiles = selectedFiles.length + newFiles.length;
 
-    // Check if the number of total selected files is greater than 5
-    if (totalFiles > 5) {
+    // Check if the number of total selected files is greater than 3
+    if (totalFiles > 3) {
       // Prevent the selection of additional files
-      toast.error(`You Can Only Select 5 Images!`, {
+      toast.error(`You Can Only Select 3 Images!`, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -42,16 +42,16 @@ function ImageUpload({
   };
 
   return (
-    <div>
+    <div className="w-screen px-36">
       <label
-        className="flex flex-col items-center justify-center h-32 p-5 mb-5 border-2 border-dashed border-gray-500 rounded-2xl text-center cursor-pointer transition-colors duration-200 ease-in-out hover:bg-emerald-100 hover:border-emerald-600"
+        className="flex flex-col items-center justify-center h-32 pb-5 mb-5 border-2 border-dashed border-gray-500 rounded-2xl text-center cursor-pointer transition-colors duration-200 ease-in-out hover:bg-emerald-100 hover:border-emerald-600"
         htmlFor="upload"
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => {
           e.preventDefault();
           const newFiles = Array.from(e.dataTransfer.files);
-          if (selectedFiles.length + newFiles.length > 5) {
-            toast.error(`You Can Only Select 5 Images!`, {
+          if (selectedFiles.length + newFiles.length > 3) {
+            toast.error(`You Can Only Select 3 Images!`, {
               position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,
@@ -123,26 +123,3 @@ function ImageUpload({
 }
 
 export default ImageUpload;
-
-// Uploads are now being done on the createListing page
-// const handleUpload = async () => {
-//   for (let i = 0; i < selectedFiles.length; i++) {
-//     const file = selectedFiles[i];
-
-//     const formData = new FormData();
-//     formData.append("file", file);
-//     formData.append("upload_preset", "yaadventures_upload_present");
-
-//     try {
-//       const res = await axios.post(
-//         `${process.env.NEXT_PUBLIC_CLOUDINARY_API}`,
-//         formData
-//       );
-//       console.log(res.data); // Log the response data
-//     } catch (error) {
-//       console.error("Error uploading image:", error);
-//     } finally {
-//       setIsImageUploadValid(false);
-//     }
-//   }
-// };

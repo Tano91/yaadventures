@@ -22,7 +22,7 @@ const Banner = () => {
         </p>
 
         <button
-          onClick={() => router.push("/Listings")}
+          onClick={() => router.push("/listings")}
           className="text-white bg-emerald-600 px-10 py-4 shadow-md rounded-full font-bold my-3 hover:shadow-xl hover:bg-emerald-800 hover:scale-105 active:scale-95 transition duration-150"
         >
           Show Listings

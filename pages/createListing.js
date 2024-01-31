@@ -31,14 +31,6 @@ const createListing = () => {
   const [isImageUploadValid, setIsImageUploadValid] = useState(false);
 
   // States for data below!:
-  const [yvType, setyvType] = useState("");
-  const [yvTitle, setyvTitle] = useState("");
-  const [yvDescription, setyvDescription] = useState("");
-  const [yvPrice, setyvPrice] = useState("");
-  const [yvAddress, setyvAddress] = useState("");
-  const [yvCity, setyvCity] = useState("");
-  const [yvParish, setyvParish] = useState("");
-  const [yvImages, setyvImages] = useState([]);
   const [yvRatings, setyvRatings] = useState([]);
   const [yvScore, setyvScore] = useState(0);
   const [yvFavourited, setyvFavourited] = useState([]);
@@ -57,7 +49,6 @@ const createListing = () => {
     }),
     yup.object().shape({
       address: yup.string().required("Address is required"),
-      city: yup.string().required("City is required"),
       parish: yup.string().required("Parish is required"),
     }),
     yup.object().shape({
@@ -163,7 +154,6 @@ const createListing = () => {
       description: values.description,
       price: values.price,
       address: values.address,
-      city: values.city,
       parish: values.parish,
       images: values.imageLinks,
 
@@ -187,8 +177,8 @@ const createListing = () => {
           progress: undefined,
           theme: "dark",
         });
-        setIsPending(false);
-        router.push("/");
+        router.push("/Listings");
+        // setIsPending(false);
       })
       .catch((error) => {
         toast.error(`Error With Adding Listing`, {
@@ -203,8 +193,6 @@ const createListing = () => {
         });
         console.log(error);
       });
-
-    // console.log(values);
   };
 
   return (
@@ -296,14 +284,6 @@ const createListing = () => {
                     label: "Address",
                     type: "text",
                     placeholder: "Type Your Address...",
-                  },
-
-                  {
-                    id: "city",
-                    name: "city",
-                    label: "City",
-                    type: "text",
-                    placeholder: "Type Your City...",
                   },
 
                   {

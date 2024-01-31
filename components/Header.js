@@ -18,18 +18,16 @@ function Header() {
   return (
     <header className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md p-5 md:px-10">
       {/* Left - Logo */}
-      <div
-        onClick={() => router.push("/")}
-        className="relative w-28 h-10 cursor-pointer my-auto"
-      >
-        <Image
-          src={yvFull_G}
-          priority
-          fill
-          sizes="500px"
-          alt="YaadVentures Logo"
-          style={{ objectFit: "contain", objectPosition: "left" }}
-        />
+      <div className=" w-28 h-10 cursor-pointer my-auto">
+        <Link href="/">
+          <Image
+            src={yvFull_G}
+            // priority
+            sizes="500px"
+            alt="YaadVentures Logo"
+            style={{ objectFit: "contain", objectPosition: "left" }}
+          />
+        </Link>
       </div>
 
       {/* Middle - Search */}
