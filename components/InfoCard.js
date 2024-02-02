@@ -5,6 +5,10 @@ import { HeartIcon as HeartIconOutline } from "@heroicons/react/24/outline";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
 import { useId } from "react-id-generator";
+import {
+  ArrowLeftCircleIcon,
+  ArrowRightCircleIcon,
+} from "@heroicons/react/24/solid";
 
 const InfoCard = ({
   index,
@@ -51,13 +55,48 @@ const InfoCard = ({
     }
   };
 
+  const handleArrowClick = (event) => {
+    event.preventDefault();
+    // Add your logic for changing the image here
+  };
+
   return (
     <div className="sm:rounded-2xl sm:flex  py-7 px-2 pr-4 cursor-pointer hover:bg-emerald-50 hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
       <div className="relative h-60 w-80 flex-shrink-0">
         <Carousel
           showThumbs={false}
-          // dynamicHeight={true}
+          axis="horizontal"
+          showStatus={false}
+          className="relative"
+          renderArrowPrev={(clickHandler, hasPrev) => (
+            <div
+              className={`${
+                hasPrev ? "absolute" : "hidden"
+              } top-0 bottom-0 left-0 flex justify-center items-center p-3 opacity-30 hover:opacity-100 cursor-pointer z-20`}
+              onClick={(event) => {
+                handleArrowClick(event);
+                clickHandler();
+              }}
+            >
+              <ArrowLeftCircleIcon className="w-9 h-9 text-white" />
+            </div>
+          )}
+          renderArrowNext={(clickHandler, hasNext) => (
+            <div
+              className={`${
+                hasNext ? "absolute" : "hidden"
+              } top-0 bottom-0 right-0 flex justify-center items-center p-3 opacity-30 hover:opacity-100 cursor-pointer z-20`}
+              onClick={(event) => {
+                handleArrowClick(event);
+                clickHandler();
+              }}
+            >
+              <ArrowRightCircleIcon className="w-9 h-9 text-white" />
+            </div>
+          )}
         >
+          {/* Carousel Items */}
+
           {images.map((img) => (
             <div key={useId()} className="h-60 md:max-w-30 object-scale-down">
               <img

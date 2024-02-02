@@ -39,20 +39,25 @@ const ReviewsDisplay = ({ listing }) => {
             className="w-full min-h-full mt-5 border border-gray-300 rounded-2xl p-5"
           >
             <p className="flex items-center ">
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-black" />
-              <StarIcon className="h-3 inline-block text-gray-300" />
+              {[...Array(5)].map((_, starIndex) => {
+                const score = Math.round(rating.score);
+                const isFilled = starIndex < score;
+                const className = isFilled
+                  ? "h-3 inline-block text-black"
+                  : "h-3 inline-block text-gray-300";
+                return <StarIcon key={starIndex} className={className} />;
+              })}
               <span className="text-lg pl-2"> · </span>
               <span className="text-sm pl-2">
                 {" "}
-                {formatDateTime(
-                  new Date(
-                    rating.createdAt.seconds * 1000 +
-                      rating.createdAt.nanoseconds / 1e6
-                  )
-                )}
+                {rating.createdAt
+                  ? formatDateTime(
+                      new Date(
+                        rating.createdAt.seconds * 1000 +
+                          rating.createdAt.nanoseconds / 1e6
+                      )
+                    )
+                  : "no date!"}
               </span>
             </p>
             {showFullText[index] ? (
