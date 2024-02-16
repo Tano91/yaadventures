@@ -325,9 +325,44 @@ const createListing = () => {
         {formStep == 5 && (
           <div>
             <h1 className="text-center text-3xl font-bold text-gray-900 mb-10 mt-10">
-              Is This Information Accurate?:
+              Is This Information Accurate?
             </h1>
-            <pre>{JSON.stringify(watch(), null, 2)}</pre>
+            {/* Information - Use watch to get Values */}
+            <h1 className="text-lg mb-4 text-center">
+              <em className="text-gray-500 ">Type:</em>{" "}
+              <p className="font-bold ">{selectedOption}</p>
+            </h1>
+            <h1 className="text-lg mb-4 text-center">
+              <em className="text-gray-500 ">Title:</em>{" "}
+              <p className="font-bold ">{watch("title")}</p>
+            </h1>{" "}
+            <h1 className="text-lg mb-4 text-center">
+              <em className="text-gray-500 ">Description:</em>{" "}
+              <p className="font-bold ">{watch("description")}</p>
+            </h1>{" "}
+            <h1 className="text-lg mb-4 text-center">
+              <em className="text-gray-500 ">Price:</em>{" "}
+              <p className="font-bold ">${watch("price")} JMD</p>
+            </h1>{" "}
+            <h1 className="text-lg mb-4 text-center">
+              <em className="text-gray-500 ">Address:</em>{" "}
+              <p className="font-bold ">{watch("address")}</p>
+            </h1>{" "}
+            <h1 className="text-lg text-center">
+              <em className="text-gray-500 ">Parish:</em>{" "}
+              <p className="font-bold ">{watch("parish")}</p>
+            </h1>{" "}
+            <div className="border-b border-gray-300 mt-10"></div>
+            {/* New Images */}
+            <h1
+              className={`${
+                selectedFiles.length > 0
+                  ? "text-center text-xl font-bold text-gray-900 mb-10 mt-10"
+                  : "hidden"
+              }`}
+            >
+              Selected Images:
+            </h1>
             <div className="grid grid-cols-5 gap-4 pt-3">
               {selectedFiles &&
                 selectedFiles.map((file, index) => (
