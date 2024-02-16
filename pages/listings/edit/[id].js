@@ -241,7 +241,7 @@ const EditListing = ({ listing }) => {
       }
     }
 
-    // THIS IS CREATING A NEW LISTING NOT UPDATING THE ORIGINAL!!!!
+    // UPDATE ORIGINAL LISTING!
     const updateListing = {
       type: values.selectedOption,
       title: values.title,
@@ -249,18 +249,14 @@ const EditListing = ({ listing }) => {
       price: values.price,
       address: values.address,
       parish: values.parish,
-      images: [...values.imageLinks, ...existingImages],
-
-      yvUser,
-
-      yvScore,
-      yvFavourited,
-      yvRatings,
-      createdAt: serverTimestamp(),
+      images: values.imageLinks
+        ? [...values.imageLinks, ...existingImages]
+        : [...existingImages],
+      updatedAt: serverTimestamp(),
     };
     await updateDoc(doc(db, "listings", listing.id), updateListing)
       .then(() => {
-        toast.success(`Listing Added!`, {
+        toast.success(`Listing Updated!`, {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -270,7 +266,7 @@ const EditListing = ({ listing }) => {
           progress: undefined,
           theme: "dark",
         });
-        router.push("/listings");
+        router.push("/listings/" + listing.id);
         // setIsPending(false);
       })
       .catch((error) => {
