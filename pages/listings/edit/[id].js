@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -10,23 +11,66 @@ import InputField from "@/components/InputField";
 import FormButtonGroup from "@/components/FormButtonGroup";
 import "react-step-progress-bar/styles.css";
 import { ProgressBar } from "react-step-progress-bar";
-import ImageUpload from "@/components/ImageUpload";
+import ImageUploadEdit from "@/components/ImageUploadEdit";
 import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { addDoc, serverTimestamp } from "firebase/firestore";
-import { listingsColRef } from "../firebase/config";
+import { db, listingsColRef } from "@/firebase/config";
+
+//Fetch Order - ID PASSED AS PARAM in URL!
+export const getServerSideProps = async (context) => {
+  const id = context.params.id;
+  const docRef = doc(db, "listings", id);
+  const docSnap = await getDoc(docRef);
+  const data = docSnap.data();
+
+  // Convert Firebase Server Timestamp to a serializable format
+  const createdAt =
+    data.createdAt && data.createdAt.toDate()
+      ? data.createdAt.toDate().toISOString()
+      : null;
+  const updatedAt =
+    data.updatedAt && data.updatedAt.toDate()
+      ? data.updatedAt.toDate().toISOString()
+      : null;
+
+  return {
+    props: { listing: { ...data, id: docRef.id, createdAt, updatedAt } },
+  };
+};
 
 const maxSteps = 5;
 
-const createListing = () => {
+const EditListing = ({ listing }) => {
   const router = useRouter();
 
+  // Initialize form with existing data
+  useEffect(() => {
+    // Set initial values for each field using setValue
+    // For example:
+    setValue("title", listing.title);
+    setValue("description", listing.description);
+    setValue("price", listing.price);
+    setValue("address", listing.address);
+    setValue("parish", listing.parish);
+
+    // ... I need to figure out the images and Types! UGHH:
+    setSelectedOption(listing.type);
+
+    // Extract image URLs from the listing data
+    if (listing.images && listing.images.length > 0) {
+      setExistingImages(listing.images);
+    }
+  }, []); // Empty dependency array ensures this runs once on mount
+
+  const [toBeDeleted, setToBeDeleted] = useState([]);
   const [formStep, setFormStep] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [imageUrls, setImageUrls] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
   const [imagesUploaded, setImagesUploaded] = useState(false);
   const [isImageUploadValid, setIsImageUploadValid] = useState(false);
 
@@ -78,7 +122,6 @@ const createListing = () => {
   };
 
   // In your renderButton function, disable the "Next" button only if the current step is invalid
-
   const renderButton = () => {
     if (formStep >= maxSteps) {
       return (
@@ -111,8 +154,59 @@ const createListing = () => {
     setFormStep((cur) => cur - 1);
   };
 
+  const regex = /yaadventures[\s\S]*?(?=\.)/;
+  const getPublicIdFromUrl = (url) => {
+    const match = url.match(regex);
+    return match ? match[0] : null;
+  };
+
   const submitForm = async (values) => {
     setIsPending(true);
+
+    // Delete images from Cloudinary if needed
+    // Add public ID stuff here
+    // Loop through and delete each
+    if (toBeDeleted.length > 0) {
+      for (let e = 0; e < toBeDeleted.length; e++) {
+        const publicId = getPublicIdFromUrl(toBeDeleted[e]);
+
+        try {
+          const response = await axios.delete("/api/deleteImage", {
+            data: {
+              publicId: publicId,
+            },
+          });
+
+          if (response.status === 200) {
+            toast.success(`Image ${e} deleted successfully!`, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+          }
+        } catch (error) {
+          toast.error(`Could Not Delete Image ${e}! Try Again!`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          console.error("Error deleting image:", error);
+        }
+        // Clear the toBeDeleted array after successful deletion
+        setToBeDeleted([]);
+      }
+    }
+
     // Handle image upload
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
@@ -147,15 +241,15 @@ const createListing = () => {
       }
     }
 
-    // Handle Pushing to Firebase here!
-    const newListing = {
+    // THIS IS CREATING A NEW LISTING NOT UPDATING THE ORIGINAL!!!!
+    const updateListing = {
       type: values.selectedOption,
       title: values.title,
       description: values.description,
       price: values.price,
       address: values.address,
       parish: values.parish,
-      images: values.imageLinks,
+      images: [...values.imageLinks, ...existingImages],
 
       yvUser,
 
@@ -164,8 +258,7 @@ const createListing = () => {
       yvRatings,
       createdAt: serverTimestamp(),
     };
-
-    await addDoc(listingsColRef, newListing)
+    await updateDoc(doc(db, "listings", listing.id), updateListing)
       .then(() => {
         toast.success(`Listing Added!`, {
           position: "top-center",
@@ -200,7 +293,7 @@ const createListing = () => {
       {/* convert to 32x32 favicon */}
       <Head>
         <link rel="icon" href="/yvIcon_G.png" />
-        <title>Yaadventures - Create Listing</title>
+        <title>Yaadventures - Edit Listing</title>
       </Head>
 
       {/* Container Div */}
@@ -220,9 +313,10 @@ const createListing = () => {
                   "Other",
                 ]}
                 setSelectedOption={setSelectedOption}
-                register={register}
                 setValue={setValue}
+                register={register}
                 trigger={trigger}
+                defaultSelectedOption={listing.type}
               />
             )}
 
@@ -302,19 +396,27 @@ const createListing = () => {
             {/* Step 4 - Images of YaadVenture*/}
             {formStep == 4 && (
               <div>
-                <h1 className="text-center text-3xl font-bold text-gray-900 mb-10 mt-10">
-                  Upload Images of Your YaadVenture
+                <h1 className="text-center text-3xl font-bold text-gray-900 mb-2 mt-10">
+                  Upload New Images of Your YaadVenture
                 </h1>
+                <p className="text-center text-sm italic text-gray-400 mt-0 mb-5">
+                  Images in Red are Images You Already Uploaded! Remove them to
+                  Add More!
+                </p>
               </div>
             )}
             {formStep === 4 && (
-              <ImageUpload
+              <ImageUploadEdit
                 errors={errors}
                 selectedFiles={selectedFiles}
                 setSelectedFiles={setSelectedFiles}
                 setIsImageUploadValid={setIsImageUploadValid}
                 imageUrls={imageUrls}
                 setImageUrls={setImageUrls}
+                toBeDeleted={toBeDeleted}
+                setToBeDeleted={setToBeDeleted}
+                existingImages={existingImages}
+                setExistingImages={setExistingImages}
               />
             )}
           </form>
@@ -381,4 +483,4 @@ const createListing = () => {
   );
 };
 
-export default createListing;
+export default EditListing;

@@ -19,13 +19,13 @@ const listings = ({ listings }) => {
 
           <h1 className="text-3xl font-semibold mt-2 mb-6">All Listings</h1>
 
-          <div className="hidden lg:inline-flex mb-5 space-x-3 text-gray-800 whitespace-nowrap">
-            <p className="button">Rivers</p>
-            <p className="button">Hikes</p>
-            <p className="button">Beaches</p>
-            <p className="button">Caves</p>
-            <p className="button">Springs</p>
-            <p className="button">Other</p>
+          <div className="flex flex-wrap lg:inline-flex mb-5  sm:space-x-3 text-gray-800 whitespace-nowrap">
+            <p className="button m-2">Rivers</p>
+            <p className="button m-2">Hikes</p>
+            <p className="button m-2">Beaches</p>
+            <p className="button m-2">Caves</p>
+            <p className="button m-2">Springs</p>
+            <p className="button m-2">Other</p>
           </div>
 
           <div className="flex flex-col">

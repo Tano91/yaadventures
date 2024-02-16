@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-const FormButtonGroup = ({ options, setSelectedOption, setValue, trigger }) => {
-  const [selected, setSelected] = useState(null);
+const FormButtonGroup = ({
+  options,
+  setSelectedOption,
+  setValue,
+  trigger,
+  defaultSelectedOption,
+}) => {
+  const [selected, setSelected] = useState(defaultSelectedOption || null);
 
   useEffect(() => {
     if (selected) {
@@ -29,7 +35,6 @@ const FormButtonGroup = ({ options, setSelectedOption, setValue, trigger }) => {
             className="text-black rounded-xl px-10 py-10 font-medium"
             type="button"
             key={option}
-            // disabled={selected !== null && selected !== option}
             style={{
               border:
                 selected === option ? "2px solid #059669" : "2px solid #d1d5db",

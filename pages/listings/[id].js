@@ -8,9 +8,17 @@ import { getDocs } from "firebase/firestore";
 import formatDateTime from "@/components/formatDateTime";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import { StarIcon } from "@heroicons/react/24/solid";
+import { StarIcon, HeartIcon } from "@heroicons/react/24/solid";
+import {
+  TrashIcon,
+  PencilSquareIcon,
+  HeartIcon as HeartIconOutline,
+} from "@heroicons/react/24/outline";
 import ImageDisplay from "@/components/ImageDisplay";
 import ReviewsDisplay from "@/components/ReviewsDisplay";
+import DeleteConfirmModal from "@/components/DeleteConfirmModal ";
+import crypto from "crypto";
+import axios from "axios";
 
 export async function getServerSideProps(context) {
   const id = context.params.id;
@@ -45,6 +53,25 @@ export async function getServerSideProps(context) {
 }
 
 const listingDetails = ({ listing }) => {
+  const [listingState, setListingState] = useState(listing);
+  const [favourited, setFavourited] = useState(false);
+  const router = useRouter();
+
+  const handleReviewClick = () => {
+    document
+      .getElementById("reviews-section")
+      .scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleFavourite = (event) => {
+    event.preventDefault();
+    if (favourited === false) {
+      setFavourited(true);
+    } else {
+      setFavourited(false);
+    }
+  };
+
   const typeStr = (type) => {
     if (type === "Rivers") {
       return "River";
@@ -60,34 +87,148 @@ const listingDetails = ({ listing }) => {
       return "Other";
     }
   };
+
+  const handleEditListing = () => {};
+
+  const regex = /yaadventures[\s\S]*?(?=\.)/;
+  const getPublicIdFromUrl = (url) => {
+    const match = url.match(regex);
+    return match ? match[0] : null;
+  };
+
+  //Delete Logic
+  const handleDeleteListing = async (item) => {
+    // Delete images from Cloudinary if needed
+    // Add public ID stuff here
+    // Loop through and delete each
+    if (listingState.images.length > 0) {
+      for (let e = 0; e < listingState.images.length; e++) {
+        const publicId = getPublicIdFromUrl(listingState.images[e]);
+
+        try {
+          const response = await axios.delete("/api/deleteImage", {
+            data: {
+              publicId: publicId,
+            },
+          });
+
+          if (response.status === 200) {
+            toast.success(`Image ${e} deleted successfully!`, {
+              position: "top-center",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "dark",
+            });
+          }
+        } catch (error) {
+          toast.error(`Could Not Delete Image ${e}! Try Again!`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+
+          console.error("Error deleting image:", error);
+          return;
+        }
+      }
+    }
+
+    await deleteDoc(doc(db, "listings", item))
+      .then(() => {
+        toast.success(`Listing Deleted!`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        router.push("/listings");
+      })
+      .catch((error) => {
+        toast.error(`There was an error Deleting the Listing!`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        console.log(error);
+      });
+  };
+
   return (
     <>
-      {/* <Head>
+      <Head>
         <link rel="icon" href="/yvIcon_G.png" />
-        <title>Yaadventures - {listing.title}</title>
-      </Head> */}
+        <title>Yaadventures - {listingState.title}</title>
+      </Head>
 
       <div className="container pt-5 pr-2 pl-2 mx-auto flex flex-col">
         <div className="container pr-2 pl-2 mx-auto flex flex-col items-center">
           <div className="w-full">
-            <ImageDisplay images={listing.images} />
+            <ImageDisplay images={listingState.images} />
           </div>
         </div>
         {/* Title Section */}
         <div className="pl-2 pt-5 pb-5 border-b border-gray-300">
-          <h1 className="text-3xl leadng-none font-bold">{listing.title}</h1>
-          <p className="">
-            {listing.address}, {listing.parish}
-          </p>
-          <p className="">
-            <em>{typeStr(listing.type)}</em>{" "}
-          </p>
-          <p className="flex items-center">
+          <div className="flex items-end justify-between">
+            <h1 className="text-3xl leadng-none font-bold">
+              {listingState.title}
+            </h1>
+            {/* Heart Icon */}
+            <div onClick={handleFavourite}>
+              {favourited === true ? (
+                <HeartIcon className="text-emerald-600 h-6 mr-2 cursor-pointer hover:scale-125 transform transition duration-300 ease-out" />
+              ) : (
+                <HeartIconOutline className="h-6 mr-2 cursor-pointer hover:text-emerald-600 hover:scale-125 transform transition duration-300 ease-out" />
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between mt-1">
+            <p className="">
+              {listingState.address}, {listingState.parish}
+            </p>
+            {/* Edit Icon */}
+            <Link href={"/listings/edit/" + listingState.id}>
+              <PencilSquareIcon
+                onClick={handleEditListing}
+                className="h-6 mr-2 text-black cursor-pointer hover:text-orange-500 hover:scale-125 transform transition duration-300 ease-out"
+              />
+            </Link>
+          </div>
+
+          <div className="flex items-center justify-between mt-2">
+            <p className="">
+              <em>{typeStr(listingState.type)}</em>{" "}
+            </p>
+            {/* Delete Icon */}
+
+            <DeleteConfirmModal
+              onConfirm={() => handleDeleteListing(listingState.id)}
+            ></DeleteConfirmModal>
+          </div>
+          <p className="flex items-center mt-3">
             <StarIcon className="h-4 inline-block text-black pr-1" />
             <b>
-              {listing.yvScore} ·
-              <u className="pl-1 cursor-pointer">
-                {listing.yvRatings.length} Reviews
+              {Math.round(listingState.yvScore * 10) / 10} ·
+              <u className="pl-1 cursor-pointer" onClick={handleReviewClick}>
+                {listingState.yvRatings.length} Reviews
               </u>
             </b>
           </p>
@@ -111,18 +252,26 @@ const listingDetails = ({ listing }) => {
             </svg>
           </div>
           <p className="pl-3">
-            <b>{listing.yvUser}</b>
+            <b>{listingState.yvUser}</b>
           </p>
         </div>
 
         {/* Description */}
         <div className="pt-5 pb-5 border-b border-gray-300">
-          <p className="text-gray-500 italic text-sm">{listing.description}</p>
+          <p className="text-gray-500 italic text-sm">
+            {listingState.description}
+          </p>
         </div>
 
         {/* Reviews Section */}
 
-        <ReviewsDisplay listing={listing} />
+        <div id="reviews-section">
+          <ReviewsDisplay
+            listing={listing}
+            listingState={listingState}
+            setListingState={setListingState}
+          />
+        </div>
       </div>
     </>
   );

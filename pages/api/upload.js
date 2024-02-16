@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     try {
       // Upload the image to Cloudinary
       const uploadResponse = await cloudinary.uploader.upload(fileStr, {
-        upload_preset: "yaadventures_upload_present", // Set this up in your Cloudinary settings
+        upload_preset: "yaadventures_upload_present",
       });
 
       // Send the uploaded image URL back to the frontend
