@@ -47,14 +47,14 @@ const InputField = ({ fields, register, errors }) => (
                 <option value="Hanover">Hanover</option>
                 <option value="Kingston">Kingston</option>
                 <option value="Manchester">Manchester</option>
-                <option value="Saint Andrew">Saint Andrew</option>
-                <option value="Saint Ann">Saint Ann</option>
-                <option value="Saint Ann's Bay">Saint Ann's Bay</option>
-                <option value="Saint Catherine">Saint Catherine</option>
-                <option value="Saint Elizabeth">Saint Elizabeth</option>
-                <option value="Saint James">Saint James</option>
-                <option value="Saint Mary">Saint Mary</option>
-                <option value="Saint Thomas">Saint Thomas</option>
+                <option value="Portland">Portland</option>
+                <option value="St. Andrew">St. Andrew</option>
+                <option value="St. Ann">St. Ann</option>
+                <option value="St. Catherine">St. Catherine</option>
+                <option value="St. Elizabeth">St. Elizabeth</option>
+                <option value="St. James">St. James</option>
+                <option value="St. Mary">St. Mary</option>
+                <option value="St. Thomas">St. Thomas</option>
                 <option value="Trelawny">Trelawny</option>
                 <option value="Westmoreland">Westmoreland</option>
               </select>

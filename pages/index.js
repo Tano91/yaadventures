@@ -4,8 +4,14 @@ import LargeCard from "@/components/LargeCard";
 import MediumCard from "@/components/MediumCard";
 import SmallCard from "@/components/SmallCard";
 import Head from "next/head";
+import { listingsColRef } from "@/firebase/config";
+import { getDocs } from "firebase/firestore";
+import { getTypesImagePaths } from "@/utils/getTypesImagePaths";
+import { getParishesImagePaths } from "@/utils/getParishesImagePaths";
 
-export default function Home({ exploreData, cardsData }) {
+export default function Home({ listings }) {
+  const typesImages = getTypesImagePaths();
+  const parishesImages = getParishesImagePaths();
   return (
     <div className="">
       {/* convert to 32x32 favicon */}
@@ -25,14 +31,14 @@ export default function Home({ exploreData, cardsData }) {
 
           {/* Pull Data from server - API Endpoints*/}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {exploreData?.map(({ index, img, parish, listings }) => (
-              // Small Parish Cards
-              <SmallCard
-                key={index}
-                img={img}
-                parish={parish}
-                listings={listings}
-              />
+            {parishesImages.map((item, index) => (
+              <div key={index}>
+                <SmallCard
+                  listings={listings}
+                  img={item.img}
+                  parish={item.parish}
+                />
+              </div>
             ))}
           </div>
         </section>
@@ -42,9 +48,10 @@ export default function Home({ exploreData, cardsData }) {
           <h2 className="text-4xl font-semibold py-8">Venture Anywhere</h2>
 
           <div className="flex space-x-5 overflow-scroll scrollbar-hide p-3 -ml-3">
-            {cardsData?.map(({ index, img, title }) => (
-              // Medium Offerings Cards
-              <MediumCard key={index} img={img} title={title} />
+            {typesImages.map((item, index) => (
+              <div key={index}>
+                <MediumCard img={item.img} title={item.title} />
+              </div>
             ))}
           </div>
         </section>
@@ -63,24 +70,39 @@ export default function Home({ exploreData, cardsData }) {
   );
 }
 
-// ISR For Homepage Here
+//ISR Revalidate Incrementally with updated data on new request
 export async function getStaticProps() {
-  const exploreData = await fetch("https://www.jsonkeeper.com/b/0OO9").then(
-    (res) => res.json()
-  );
+  // Create a query to retrieve the ordered documents
 
-  const cardsData = await fetch("https://www.jsonkeeper.com/b/1FAQ").then(
-    (res) => res.json()
-  );
+  // Get Collection Data
+  const fetchedListings = await getDocs(listingsColRef);
+  // const fetchedUsers = await getDocs(usersColRef);
 
+  // Store Collection Data in Object
+  const dataListings = fetchedListings.docs.map((doc) => {
+    const data = doc.data();
+    // Check if createdAt field exists and is a valid date
+    const createdAt =
+      data.createdAt && data.createdAt.toDate()
+        ? data.createdAt.toDate().toISOString()
+        : null;
+    const updatedAt =
+      data.updatedAt && data.updatedAt.toDate()
+        ? data.updatedAt.toDate().toISOString()
+        : null;
+    return { ...data, id: doc.id, createdAt, updatedAt };
+  });
+
+  // const dataUsers = fetchedUsers.docs.map((doc) => {
+  //   return { ...doc.data(), id: doc.id };
+  // });
+
+  // Return Collection Data as a Prop for Component
   return {
-    props: {
-      exploreData,
-      cardsData,
-    },
+    props: { listings: dataListings },
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
-    // - At most once every 10 seconds
-    revalidate: 100, // In seconds
+    // - At most once every 2 seconds
+    revalidate: 2,
   };
 }

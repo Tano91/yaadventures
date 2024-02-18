@@ -4,6 +4,7 @@ import InfoCard from "@/components/InfoCard";
 import { listingsColRef } from "@/firebase/config";
 import { getDocs } from "firebase/firestore";
 import Link from "next/link";
+import CounterField from "@/components/CounterField";
 
 const listings = ({ listings }) => {
   return (
@@ -20,12 +21,66 @@ const listings = ({ listings }) => {
           <h1 className="text-3xl font-semibold mt-2 mb-6">All Listings</h1>
 
           <div className="flex flex-wrap lg:inline-flex mb-5  sm:space-x-3 text-gray-800 whitespace-nowrap">
-            <p className="button m-2">Rivers</p>
-            <p className="button m-2">Hikes</p>
-            <p className="button m-2">Beaches</p>
-            <p className="button m-2">Caves</p>
-            <p className="button m-2">Springs</p>
-            <p className="button m-2">Other</p>
+            <p className="button m-2 text-sm font-medium">
+              Rivers{" "}
+              <CounterField
+                fields={{
+                  name: "Type",
+                  toCount: "Rivers",
+                }}
+                listings={listings}
+              />
+            </p>
+            <p className="button m-2 text-sm font-medium">
+              Hikes{" "}
+              <CounterField
+                fields={{
+                  name: "Type",
+                  toCount: "Hikes",
+                }}
+                listings={listings}
+              />
+            </p>
+            <p className="button m-2 text-sm font-medium">
+              Beaches{" "}
+              <CounterField
+                fields={{
+                  name: "Type",
+                  toCount: "Beaches",
+                }}
+                listings={listings}
+              />
+            </p>
+            <p className="button m-2 text-sm font-medium">
+              Caves{" "}
+              <CounterField
+                fields={{
+                  name: "Type",
+                  toCount: "Caves",
+                }}
+                listings={listings}
+              />
+            </p>
+            <p className="button m-2 text-sm font-medium">
+              Springs{" "}
+              <CounterField
+                fields={{
+                  name: "Type",
+                  toCount: "Springs",
+                }}
+                listings={listings}
+              />
+            </p>
+            <p className="button m-2 text-sm font-medium">
+              Other{" "}
+              <CounterField
+                fields={{
+                  name: "Type",
+                  toCount: "Other",
+                }}
+                listings={listings}
+              />
+            </p>
           </div>
 
           <div className="flex flex-col">

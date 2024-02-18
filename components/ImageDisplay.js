@@ -20,11 +20,12 @@ const ImageGrid = ({ images }) => {
     }
   };
 
-  // Add this line to get the count of images
+  // Get the count of images
   const imageCount = images.length;
 
   return (
     <div className="flex flex-col md:flex-row overflow-hidden max-h-[450px]">
+      {/* Main Image Logic */}
       <div
         className={`relative w-full md:w-1/2 max-h-[400px] md:max-h-[500px] md:mr-3 ${
           imageCount > 1
@@ -42,7 +43,7 @@ const ImageGrid = ({ images }) => {
           priority
           className=""
         />
-
+        {/* Render Buttons Conditionally */}
         {imageCount > 1 && (
           <div
             className={`absolute top-10 bottom-10 left-0  items-center w-full p-2 z-10 flex  ${
@@ -78,14 +79,7 @@ const ImageGrid = ({ images }) => {
             .filter((_, index) => index !== currentIndex)
             .slice(0, 4)
             .map((image, index) => (
-              <div
-                key={index}
-                className={`w-full h-full hidden md:inline  ${
-                  index === 1 || imageCount === 2
-                    ? "md:rounded-r-3xl overflow-hidden"
-                    : ""
-                }`}
-              >
+              <div key={index} className={`w-full h-full hidden md:inline  `}>
                 <Image
                   key={index}
                   src={image}
@@ -94,7 +88,11 @@ const ImageGrid = ({ images }) => {
                   height={250}
                   style={{ objectFit: "cover", width: "auto", height: "100%" }}
                   priority
-                  className=""
+                  className={`w-full h-full hidden md:inline  ${
+                    index === 1 || imageCount === 2
+                      ? "md:rounded-r-3xl overflow-hidden "
+                      : ""
+                  }`}
                 />
               </div>
             ))}
