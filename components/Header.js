@@ -13,6 +13,19 @@ import Link from "next/link";
 function Header() {
   const [searchInput, setSearchInput] = useState("");
 
+  const handleSearchChange = (event) => {
+    setSearchInput(event.target.value);
+    // console.log(searchInput);
+  };
+
+  const handleSearchSubmit = (event) => {
+    // setSearchInput(event.target.value);
+    event.preventDefault();
+    router.push(
+      `/listings/search?term=${encodeURIComponent(searchInput).toLowerCase()}`
+    );
+  };
+
   const router = useRouter();
 
   return (
@@ -31,17 +44,20 @@ function Header() {
       </div>
 
       {/* Middle - Search */}
-      <div className="flex items-center border-2 rounded-full py-2 md:shadow-sm">
+      <form
+        onSubmit={handleSearchSubmit}
+        className="flex items-center border-2 rounded-full py-2 md:shadow-sm"
+      >
         <input
           value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
+          onChange={() => handleSearchChange(event)}
           type="text"
           placeholder="Search"
           className="flex-grow pl-5 bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400"
         />
 
-        <MagnifyingGlassIcon className="hidden relative sm:right-2 md:right-1 sm:inline-flex h-8 bg-emerald-600 text-white rounded-full p-2 cursor-pointer md:mx-1 hover:scale-105 active:scale-90 transform transition duration-300 ease-out" />
-      </div>
+        {/* <MagnifyingGlassIcon className="hidden relative sm:right-2 md:right-1 sm:inline-flex h-8 bg-emerald-600 text-white rounded-full p-2 cursor-pointer md:mx-1 hover:scale-105 active:scale-90 transform transition duration-300 ease-out" /> */}
+      </form>
 
       {/* Right - Personal Info */}
 

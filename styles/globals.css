@@ -13,4 +13,23 @@
 }
 
  
-  */
+  /* Custom Scrollbar */
+
+  ::-webkit-scrollbar{
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track{
+    background: none;
+  }
+
+  ::-webkit-scrollbar-thumb{
+    background:#059669;
+    border-radius: 10px;
+  }
+
+::-webkit-scrollbar-thumb:hover{
+    background:#035d40;
+    border-radius: 10px;
+  }

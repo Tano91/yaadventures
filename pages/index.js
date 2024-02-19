@@ -54,10 +54,8 @@ export default function Home({ listings }) {
         <section>
           <h2 className="text-4xl font-semibold py-8">Venture Anywhere</h2>
 
-          <div
-            className="flex space-x-5 p-3 -ml-3  scrollbar-thumb-gray-200 
-scrollbar-track-white scrollbar-thin overflow-x-auto"
-          >
+          {/* <div className="flex space-x-5 p-3 -ml-3  scrollbar-thumb-gray-200 scrollbar-track-white scrollbar-thin overflow-x-auto"> */}
+          <div className="flex space-x-5 p-3 -ml-3 pb-10  overflow-x-auto">
             {typesImages.map((item, index) => (
               <button
                 key={index}

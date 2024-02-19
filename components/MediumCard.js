@@ -14,7 +14,7 @@ const MediumCard = ({ img, title, listings }) => {
         />
       </div>
 
-      <h3 className="text-2xl mt-3">
+      <h3 className="text-xl font-bold mt-3">
         {title}{" "}
         <CounterField
           fields={{
