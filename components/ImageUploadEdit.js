@@ -110,7 +110,7 @@ function ImageUploadEdit({
     [handleDelete];
 
   return (
-    <div className="w-screen px-36">
+    <div className="w-screen px-10 sm:px-36">
       <label
         className="flex flex-col items-center justify-center h-32 pb-5 mb-5 border-2 border-dashed border-gray-500 rounded-2xl text-center cursor-pointer transition-colors duration-200 ease-in-out hover:bg-emerald-100 hover:border-emerald-600"
         htmlFor="upload"
@@ -164,11 +164,12 @@ function ImageUploadEdit({
       >
         Existing Images:
       </p>
-      <div className="grid grid-cols-5 gap-4 pt-3">
+      {/* Make Images a column instead of grid on smaller screens */}
+      <div className="sm:grid sm:grid-cols-3 sm:gap-4 pt-3">
         {existingImages.map((url, index) => (
           <div
             key={index}
-            className="flex flex-col space-y-5 items-center justify-between"
+            className="flex flex-col space-y-5 items-center justify-between mb-3 sm:mb-0"
           >
             <div className="">
               <Image
@@ -218,11 +219,11 @@ function ImageUploadEdit({
         Removed Images:
       </p>
       {/* Deleted Images Display */}
-      <div className="grid grid-cols-5 gap-4 pt-3">
+      <div className="sm:grid sm:grid-cols-3 sm:gap-4 pt-3">
         {toBeDeleted.map((url, index) => (
           <div
             key={index}
-            className="flex flex-col space-y-5 items-center justify-between"
+            className="flex flex-col space-y-5 items-center justify-between mb-3 sm:mb-0"
           >
             <div className="">
               <Image
@@ -263,11 +264,11 @@ function ImageUploadEdit({
         New Images:
       </p>
       {/* New Images Display */}
-      <div className="grid grid-cols-5 gap-4 pt-3">
+      <div className="sm:grid sm:grid-cols-3 sm:gap-4 pt-3">
         {imageUrls.map((url, index) => (
           <div
             key={index}
-            className="flex flex-col space-y-5 items-center justify-between"
+            className="flex flex-col space-y-5 items-center justify-between mb-3 sm:mb-0"
           >
             <div className="">
               <Image

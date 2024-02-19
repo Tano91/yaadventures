@@ -40,7 +40,7 @@ function Header() {
           className="flex-grow pl-5 bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400"
         />
 
-        <MagnifyingGlassIcon className="hidden relative sm:right-2 md:right-1 sm:inline-flex h-8 bg-emerald-500 text-white rounded-full p-2 cursor-pointer md:mx-1 hover:scale-105 active:scale-90 transform transition duration-300 ease-out" />
+        <MagnifyingGlassIcon className="hidden relative sm:right-2 md:right-1 sm:inline-flex h-8 bg-emerald-600 text-white rounded-full p-2 cursor-pointer md:mx-1 hover:scale-105 active:scale-90 transform transition duration-300 ease-out" />
       </div>
 
       {/* Right - Personal Info */}
@@ -50,14 +50,14 @@ function Header() {
           href={"/listings"}
           className="mr-1 sm:mr-2 flex items-center hover:scale-110 active:scale-100 transition ease-out cursor-pointer"
         >
-          <GlobeAltIcon className="sm:mr-2 h-7 sm:h-8 text-emerald-500 " />
+          <GlobeAltIcon className="sm:mr-2 h-7 sm:h-8 text-emerald-600 " />
           <span className="hidden lg:inline">
             <b className="text-gray-500">All Listings</b>
           </span>
         </Link>
         <p className="cursor-pointer hover:scale-110 active:scale-100 transform transition duration-300 ease-out">
           <Link className="space-x-2 flex items-center" href={"/createListing"}>
-            <PlusCircleIcon className="mr-1 sm:mr-0 h-7 sm:h-8 inline text-emerald-500" />
+            <PlusCircleIcon className="mr-1 sm:mr-0 h-7 sm:h-8 inline text-emerald-600" />
             <span className="hidden lg:inline">
               <b>New Listing</b>
             </span>

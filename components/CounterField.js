@@ -2,7 +2,7 @@ const CounterField = ({ fields, listings }) => {
   const parishCounter = () => {
     let counter = 0;
     listings.map((item) => {
-      if (fields.toCount.parish === item.parish) {
+      if (fields.toCount === item.parish) {
         counter++;
       }
     });

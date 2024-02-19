@@ -8,8 +8,8 @@ const Banner = () => {
   return (
     <div className="relative h-[300px] sm:h-[400px] lg:h-[500px]xl:h-[600px] 2xl:h-[700px]">
       <Image
-        src="https://res.cloudinary.com/dcottdki8/image/upload/v1701022909/yaadventures/landscapebanner_1.jpg"
-        priority={false}
+        src="/landscapebanner_1.jpg"
+        priority
         fill
         alt="Banner Image"
         style={{ objectFit: "cover" }}

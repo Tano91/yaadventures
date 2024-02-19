@@ -8,8 +8,10 @@ import { listingsColRef } from "@/firebase/config";
 import { getDocs } from "firebase/firestore";
 import { getTypesImagePaths } from "@/utils/getTypesImagePaths";
 import { getParishesImagePaths } from "@/utils/getParishesImagePaths";
+import { useRouter } from "next/router";
 
 export default function Home({ listings }) {
+  const router = useRouter();
   const typesImages = getTypesImagePaths();
   const parishesImages = getParishesImagePaths();
   return (
@@ -32,13 +34,18 @@ export default function Home({ listings }) {
           {/* Pull Data from server - API Endpoints*/}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {parishesImages.map((item, index) => (
-              <div key={index}>
+              <button
+                key={index}
+                onClick={() =>
+                  router.push(`/listings/filtered-listings?type=${item.parish}`)
+                }
+              >
                 <SmallCard
                   listings={listings}
                   img={item.img}
                   parish={item.parish}
                 />
-              </div>
+              </button>
             ))}
           </div>
         </section>
@@ -47,18 +54,30 @@ export default function Home({ listings }) {
         <section>
           <h2 className="text-4xl font-semibold py-8">Venture Anywhere</h2>
 
-          <div className="flex space-x-5 overflow-scroll scrollbar-hide p-3 -ml-3">
+          <div
+            className="flex space-x-5 p-3 -ml-3  scrollbar-thumb-gray-200 
+scrollbar-track-white scrollbar-thin overflow-x-auto"
+          >
             {typesImages.map((item, index) => (
-              <div key={index}>
-                <MediumCard img={item.img} title={item.title} />
-              </div>
+              <button
+                key={index}
+                onClick={() =>
+                  router.push(`/listings/filtered-listings?type=${item.title}`)
+                }
+              >
+                <MediumCard
+                  img={item.img}
+                  title={item.title}
+                  listings={listings}
+                />
+              </button>
             ))}
           </div>
         </section>
 
         {/* Section 3 */}
         <LargeCard
-          img="https://res.cloudinary.com/dcottdki8/image/upload/v1701023180/yaadventures/landscapebanner_2.jpg"
+          img="/landscapebanner_2.jpg"
           title="Top Picks"
           description="Our Highest Rated YaadVentures"
           buttonText="Show Me!"

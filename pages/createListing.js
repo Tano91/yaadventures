@@ -363,12 +363,12 @@ const createListing = () => {
             >
               Selected Images:
             </h1>
-            <div className="grid grid-cols-5 gap-4 pt-3">
+            <div className="sm:grid sm:grid-cols-3 sm:gap-4 pt-3">
               {selectedFiles &&
                 selectedFiles.map((file, index) => (
                   <div
                     key={index}
-                    className="flex flex-col space-y-5 items-center justify-between"
+                    className="flex flex-col space-y-5 items-center justify-between mb-3 sm:mb-0"
                   >
                     <div className="">
                       <Image

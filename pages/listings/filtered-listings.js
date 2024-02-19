@@ -7,20 +7,41 @@ import Link from "next/link";
 import CounterField from "@/components/CounterField";
 import { useRouter } from "next/router";
 
-const listings = ({ listings }) => {
+const filteredListings = ({ listings }) => {
   const router = useRouter();
+  const { type } = router.query;
+
+  // Initialize filtered listings
+  let filteredListings = [...listings];
+
+  // Filter by type if the type is not '4'
+  if (type !== "4") {
+    filteredListings = filteredListings.filter(
+      (listing) => listing.type.includes(type) || listing.parish.includes(type)
+    );
+  }
+
+  // Sort the filtered listings by yvScore in ascending order if type is '4'
+  if (type === "4") {
+    filteredListings = filteredListings
+      .filter((listing) => listing.yvScore >= 4)
+      .sort((a, b) => b.yvScore - a.yvScore);
+  }
   return (
     <div className="h-screen">
       {/* convert to 32x32 favicon */}
       <Head>
         <link rel="icon" href="/yvIcon_G.png" />
-        <title>Yaadventures - All Listings</title>
+        <title>Yaadventures - {type === "4" ? "Highest Rated" : type} </title>
       </Head>
       <main className="flex">
         <section className="flex-grow pt-14 px-6">
-          <p className="text-xs">{listings.length} Locations Listed </p>
+          <p className="text-xs">{filteredListings.length} Locations Listed </p>
 
-          <h1 className="text-3xl font-semibold mt-2 mb-6">All Listings</h1>
+          <h1 className="text-3xl font-semibold mt-2 mb-6">
+            {type === "4" ? "Highest Rated Yaadventures" : type}
+          </h1>
+
           {/* All Buttons */}
           <div className="flex flex-wrap lg:inline-flex mb-5  sm:space-x-3 text-gray-800 whitespace-nowrap">
             <button
@@ -114,9 +135,8 @@ const listings = ({ listings }) => {
               />
             </button>
           </div>
-
           <div className="flex flex-col">
-            {listings.map(
+            {filteredListings.map(
               ({
                 id,
                 type,
@@ -159,7 +179,7 @@ const listings = ({ listings }) => {
   );
 };
 
-export default listings;
+export default filteredListings;
 
 //ISR Revalidate Incrementally with updated data on new request
 export async function getStaticProps() {
@@ -187,14 +207,6 @@ export async function getStaticProps() {
   // const dataUsers = fetchedUsers.docs.map((doc) => {
   //   return { ...doc.data(), id: doc.id };
   // });
-
-  // Sort the listings by the createdAt date in descending order
-  dataListings.sort((a, b) => {
-    // Convert strings to Date objects for accurate comparison
-    const dateA = new Date(a.createdAt);
-    const dateB = new Date(b.createdAt);
-    return dateB - dateA; // Sort in descending order
-  });
 
   // Return Collection Data as a Prop for Component
   return {

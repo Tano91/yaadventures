@@ -5,7 +5,7 @@ import CounterField from "./CounterField";
 
 const SmallCard = ({ img, parish, listings }) => {
   return (
-    <div className="flex items-center m-2 mt-5 space-x-4 rounded-xl cursor-pointer hover:bg-emerald-50 hover:scale-105 transition transform duration-200 ease-out">
+    <div className="flex items-center m-2 mt-5 space-x-4 rounded-xl cursor-pointer hover:bg-emerald-50 hover:scale-105 active:scale-90 transition transform duration-200 ease-out">
       {/* Left */}
       <div className="relative h-16 w-16">
         <Image
@@ -26,7 +26,7 @@ const SmallCard = ({ img, parish, listings }) => {
           <CounterField
             fields={{
               name: "Parish",
-              toCount: { parish },
+              toCount: parish,
             }}
             listings={listings}
           />{" "}
