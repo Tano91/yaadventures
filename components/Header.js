@@ -24,6 +24,7 @@ function Header() {
     router.push(
       `/listings/search?term=${encodeURIComponent(searchInput).toLowerCase()}`
     );
+    setSearchInput("");
   };
 
   const router = useRouter();

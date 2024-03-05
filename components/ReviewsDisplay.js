@@ -20,7 +20,9 @@ const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
   const [allRatings, setAllRatings] = useState(listingState.yvRatings || []);
 
   const truncatedComment = (fullComment) => {
-    return fullComment.split(" ").slice(0, 30).join(" ");
+    return fullComment.length > 30
+      ? fullComment.split(" ").slice(0, 30).join(" ") + " . . . "
+      : fullComment.split(" ").slice(0, 30).join(" ");
   };
 
   const toggleFullText = (index) => {
@@ -269,7 +271,7 @@ const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
             {showFullText[index] ? (
               <p className="text-justify">{rating.comment}</p>
             ) : (
-              <p>{truncatedComment(rating.comment)}</p>
+              <p className="text-justify">{truncatedComment(rating.comment)}</p>
             )}
 
             {/* Username + Readmore */}
@@ -296,12 +298,14 @@ const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
               </div>
 
               {/* Read More */}
-              <button
-                onClick={() => toggleFullText(index)}
-                className="font-bold underline pt-5 text-sm"
-              >
-                {showFullText[index] ? "Read Less" : "Read More"}
-              </button>
+              {rating.comment.length > 30 && (
+                <button
+                  onClick={() => toggleFullText(index)}
+                  className="font-bold hover:scale-105  hover:text-emerald-600 transform transition duration-300 ease-out underline pt-5 text-sm"
+                >
+                  {showFullText[index] ? "Read Less" : "Read More"}
+                </button>
+              )}
             </div>
           </div>
         ))}

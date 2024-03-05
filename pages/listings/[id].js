@@ -19,6 +19,7 @@ import ReviewsDisplay from "@/components/ReviewsDisplay";
 import DeleteConfirmModal from "@/components/DeleteConfirmModal ";
 import crypto from "crypto";
 import axios from "axios";
+import Footer from "@/components/Footer";
 
 export async function getServerSideProps(context) {
   const id = context.params.id;
@@ -178,7 +179,7 @@ const listingDetails = ({ listing }) => {
         <title>Yaadventures - {listingState.title}</title>
       </Head>
 
-      <div className="container pt-5 pr-2 pl-2 mx-auto flex flex-col">
+      <div className="container pt-5 pr-2 pl-2 mx-auto flex flex-col mb-10">
         <div className="container pr-2 pl-2 mx-auto flex flex-col items-center">
           <div className="w-full">
             <ImageDisplay images={listingState.images} />
@@ -273,6 +274,7 @@ const listingDetails = ({ listing }) => {
           />
         </div>
       </div>
+      <Footer />
     </>
   );
 };
