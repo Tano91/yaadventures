@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "yaadventures-tano.firebaseapp.com",
   projectId: "yaadventures-tano",
   storageBucket: "yaadventures-tano.appspot.com",
