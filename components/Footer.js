@@ -23,7 +23,9 @@ const Footer = () => {
       </div>
 
       <div className="flex justify-center">
-        <p className="text-gray-300 text-sm pb-5">© Santano McCalla</p>
+        <p className="text-gray-300 text-sm pb-5">
+          © 2024 Santano McCalla - Made with ❤️ using Next.js
+        </p>
       </div>
     </div>
   );

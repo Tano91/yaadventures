@@ -169,8 +169,8 @@ const SearchPage = ({ listings }) => {
 
 export default SearchPage;
 
-//ISR Revalidate Incrementally with updated data on new request
-export async function getStaticProps() {
+// Refactored to SSR with getServerSideProps
+export async function getServerSideProps() {
   // Create a query to retrieve the ordered documents
 
   // Get Collection Data
@@ -196,12 +196,16 @@ export async function getStaticProps() {
   //   return { ...doc.data(), id: doc.id };
   // });
 
+  // Sort the listings by the createdAt date in descending order
+  dataListings.sort((a, b) => {
+    // Convert strings to Date objects for accurate comparison
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+    return dateB - dateA; // Sort in descending order
+  });
+
   // Return Collection Data as a Prop for Component
   return {
     props: { listings: dataListings },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 2 seconds
-    revalidate: 2,
   };
 }

@@ -161,8 +161,8 @@ const listings = ({ listings }) => {
 
 export default listings;
 
-//ISR Revalidate Incrementally with updated data on new request
-export async function getStaticProps() {
+// Refactored to SSR with getServerSideProps
+export async function getServerSideProps() {
   // Create a query to retrieve the ordered documents
 
   // Get Collection Data
@@ -199,9 +199,5 @@ export async function getStaticProps() {
   // Return Collection Data as a Prop for Component
   return {
     props: { listings: dataListings },
-    // Next.js will attempt to re-generate the page:
-    // - When a request comes in
-    // - At most once every 2 seconds
-    revalidate: 2,
   };
 }

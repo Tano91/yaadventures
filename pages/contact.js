@@ -26,7 +26,7 @@ const contact = () => {
           <div className="text-4xl text-center mb-4">📧</div>
           <div className="text-xl text-center font-bold mb-2 ">By Email</div>
           <div className="text-xl text-center text-gray-600">
-            email@myemail.io
+            santanomccalla@gmail.com
           </div>
         </div>
       </main>
