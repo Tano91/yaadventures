@@ -1,5 +1,6 @@
 import React from "react";
 import DeleteAccountModal from "@/components/DeleteAccountModal";
+import Footer from "@/components/Footer";
 
 const handleDeleteUserData = async () => {
   const response = await fetch("/api/delete-user", {
