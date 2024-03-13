@@ -4,19 +4,19 @@ import LargeCard from "@/components/LargeCard";
 import MediumCard from "@/components/MediumCard";
 import SmallCard from "@/components/SmallCard";
 import Head from "next/head";
-import { listingsColRef } from "@/firebase/config";
+import { listingsColRef, usersColRef } from "@/firebase/config";
 import { getDocs } from "firebase/firestore";
 import { getTypesImagePaths } from "@/utils/getTypesImagePaths";
 import { getParishesImagePaths } from "@/utils/getParishesImagePaths";
 import { useRouter } from "next/router";
 
-export default function Home({ listings }) {
+export default function Home({ listings, users }) {
   const router = useRouter();
   const typesImages = getTypesImagePaths();
   const parishesImages = getParishesImagePaths();
+
   return (
     <div className="">
-      {/* convert to 32x32 favicon */}
       <Head>
         <link rel="icon" href="/yvIcon_G.png" />
         <title>Yaadventures - Home</title>
@@ -82,7 +82,9 @@ export default function Home({ listings }) {
         />
       </main>
 
-      <Footer />
+      <div className="">
+        <Footer />
+      </div>
     </div>
   );
 }
@@ -93,7 +95,7 @@ export async function getServerSideProps() {
 
   // Get Collection Data
   const fetchedListings = await getDocs(listingsColRef);
-  // const fetchedUsers = await getDocs(usersColRef);
+  const fetchedUsers = await getDocs(usersColRef);
 
   // Store Collection Data in Object
   const dataListings = fetchedListings.docs.map((doc) => {
@@ -110,9 +112,9 @@ export async function getServerSideProps() {
     return { ...data, id: doc.id, createdAt, updatedAt };
   });
 
-  // const dataUsers = fetchedUsers.docs.map((doc) => {
-  //   return { ...doc.data(), id: doc.id };
-  // });
+  const dataUsers = fetchedUsers.docs.map((doc) => {
+    return { ...doc.data(), id: doc.id };
+  });
 
   // Sort the listings by the createdAt date in descending order
   dataListings.sort((a, b) => {
@@ -124,6 +126,6 @@ export async function getServerSideProps() {
 
   // Return Collection Data as a Prop for Component
   return {
-    props: { listings: dataListings },
+    props: { listings: dataListings, users: dataUsers },
   };
 }

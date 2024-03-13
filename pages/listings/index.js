@@ -154,7 +154,9 @@ const listings = ({ listings }) => {
         </section>
       </main>
 
-      <Footer />
+      <div className="">
+        <Footer />
+      </div>
     </div>
   );
 };

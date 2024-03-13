@@ -174,7 +174,9 @@ const filteredListings = ({ listings }) => {
         </section>
       </main>
 
-      <Footer />
+      <div className="">
+        <Footer />
+      </div>
     </div>
   );
 };

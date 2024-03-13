@@ -10,16 +10,16 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { StarIcon, HeartIcon } from "@heroicons/react/24/solid";
 import {
-  TrashIcon,
   PencilSquareIcon,
   HeartIcon as HeartIconOutline,
 } from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/solid";
 import ImageDisplay from "@/components/ImageDisplay";
 import ReviewsDisplay from "@/components/ReviewsDisplay";
 import DeleteConfirmModal from "@/components/DeleteConfirmModal ";
-import crypto from "crypto";
 import axios from "axios";
 import Footer from "@/components/Footer";
+import { useSession } from "next-auth/react";
 
 export async function getServerSideProps(context) {
   const id = context.params.id;
@@ -37,18 +37,11 @@ export async function getServerSideProps(context) {
       ? formatDateTime(data.updatedAt.toDate().toISOString())
       : null;
 
-  //grab users
-  // const fetchedUsers = await getDocs(usersColRef);
-  // const dataUsers = fetchedUsers.docs.map((doc) => {
-  //     return { ...doc.data(), id: doc.id };
-  //   });
-
   return {
     props: {
       listing: JSON.parse(
         JSON.stringify({ ...data, id: docRef.id, createdAt, updatedAt })
       ),
-      // users:{...dataUsers}
     },
   };
 }
@@ -57,6 +50,8 @@ const listingDetails = ({ listing }) => {
   const [listingState, setListingState] = useState(listing);
   const [favourited, setFavourited] = useState(false);
   const router = useRouter();
+  const { data: session, status } = useSession();
+  // console.log(session);
 
   const handleReviewClick = () => {
     document
@@ -206,12 +201,20 @@ const listingDetails = ({ listing }) => {
               {listingState.address}, {listingState.parish}
             </p>
             {/* Edit Icon */}
-            <Link href={"/listings/edit/" + listingState.id}>
+
+            {session?.user?.id === listingState.yvUser.id ? (
+              <Link href={"/listings/edit/" + listingState.id}>
+                <PencilSquareIcon
+                  onClick={handleEditListing}
+                  className="h-6 mr-2 text-black cursor-pointer hover:text-orange-500 hover:scale-125 transform transition duration-300 ease-out"
+                />
+              </Link>
+            ) : (
               <PencilSquareIcon
                 onClick={handleEditListing}
-                className="h-6 mr-2 text-black cursor-pointer hover:text-orange-500 hover:scale-125 transform transition duration-300 ease-out"
+                className="h-6 mr-2 text-gray-300"
               />
-            </Link>
+            )}
           </div>
 
           <div className="flex items-center justify-between mt-2">
@@ -219,10 +222,13 @@ const listingDetails = ({ listing }) => {
               <em>{typeStr(listingState.type)}</em>{" "}
             </p>
             {/* Delete Icon */}
-
-            <DeleteConfirmModal
-              onConfirm={() => handleDeleteListing(listingState.id)}
-            ></DeleteConfirmModal>
+            {session?.user?.id === listingState.yvUser.id ? (
+              <DeleteConfirmModal
+                onConfirm={() => handleDeleteListing(listingState.id)}
+              ></DeleteConfirmModal>
+            ) : (
+              <TrashIcon className="h-6 mr-2.5 text-gray-300" />
+            )}
           </div>
           <p className="flex items-center mt-3">
             <StarIcon className="h-4 inline-block text-black pr-1" />
@@ -239,21 +245,20 @@ const listingDetails = ({ listing }) => {
 
         <div className="mt-5 flex items-center pb-5 ">
           <div className="relative w-10 h-10 overflow-hidden bg-gray-400 rounded-full ">
-            <svg
-              className="absolute w-12 h-12 text-gray-200 -left-1"
-              fillRule="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clipRule="evenodd"
-              ></path>
-            </svg>
+            <Image
+              src={
+                listingState.yvUser.image
+                  ? listingState.yvUser.image
+                  : "/Sample_User_Icon_WC.png"
+              }
+              width={64}
+              height={64}
+              sizes="64px"
+              alt="user profile image"
+            />
           </div>
           <p className="pl-3">
-            <b>{listingState.yvUser}</b>
+            <b>{listingState.yvUser.name}</b>
           </p>
         </div>
 
@@ -274,7 +279,9 @@ const listingDetails = ({ listing }) => {
           />
         </div>
       </div>
-      <Footer />
+      <div className="">
+        <Footer />
+      </div>
     </>
   );
 };

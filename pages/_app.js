@@ -3,7 +3,7 @@ import ProgressBar from "@badrap/bar-of-progress";
 import Router from "next/router";
 import PropTypes from "prop-types";
 import Layout from "@/components/Layout";
-// import { SessionProvider } from 'next-auth/react';
+import { SessionProvider } from "next-auth/react";
 
 const progress = new ProgressBar({
   size: 4,
@@ -20,11 +20,11 @@ const App = (props) => {
   const { Component, pageProps } = props;
 
   return (
-    // <SessionProvider session={pageProps.session}>
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
-    // </SessionProvider>;
+    <SessionProvider session={pageProps.session}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </SessionProvider>
   );
 };
 

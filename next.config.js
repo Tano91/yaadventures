@@ -35,6 +35,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "greengrottocavesja.com",
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
     ],
   },
   env: {

@@ -10,6 +10,8 @@ import { db } from "../firebase/config";
 import { doc, updateDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { arrayRemove, serverTimestamp } from "firebase/firestore";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
   const [showFullText, setShowFullText] = useState(
@@ -20,9 +22,11 @@ const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
   const [allRatings, setAllRatings] = useState(listingState.yvRatings || []);
 
   const truncatedComment = (fullComment) => {
-    return fullComment.length > 30
-      ? fullComment.split(" ").slice(0, 30).join(" ") + " . . . "
-      : fullComment.split(" ").slice(0, 30).join(" ");
+    if (fullComment.split(" ").length > 30) {
+      return fullComment.split(" ").slice(0, 30).join(" ") + " . . . ";
+    } else {
+      return fullComment;
+    }
   };
 
   const toggleFullText = (index) => {
@@ -32,7 +36,7 @@ const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -54,8 +58,9 @@ const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
 
     const reviewData = {
       user: {
-        username: "Admin",
-        image: "http://www.w3.org/2000/svg",
+        username: session?.user.name ? session?.user.name : "Admin",
+        image: session?.user.image ? session?.user.image : "",
+        userID: session?.user.id ? session?.user.id : "",
       },
       comment: commentText,
       score: selectedStar,
@@ -217,25 +222,36 @@ const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
         onSubmit={handleReviewSubmit}
         className="pb-10 pt-5 border-b  border-gray-300"
       >
-        {generateStars()}
+        {status === "authenticated" ? generateStars() : null}
 
-        <label htmlFor="review" className="flex items-center space-x-3 mt-5">
-          <textarea
-            type="text"
-            className="flex-1 h-36 border border-gray-300 rounded-lg p-4 text-pretty"
-            placeholder="Type your Review Here!"
-            alt="review text"
-            value={commentText}
-            onChange={(e) => setCommentText(e.target.value)}
-          />
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="disabled:text-gray-300 disabled:pointer-events-none"
-          >
-            <PaperAirplaneIcon className="h-8 cursor-pointer hover:scale-125 active:scale-90 transform transition duration-300 ease-out " />
-          </button>
-        </label>
+        {status === "authenticated" ? (
+          <label htmlFor="review" className="flex items-center space-x-3 mt-5">
+            <textarea
+              type="text"
+              className="flex-1 h-36 border border-gray-300 rounded-lg p-4 text-pretty"
+              placeholder={
+                status !== "authenticated"
+                  ? "Sign In to Leave A Review!"
+                  : "Type your Review Here!"
+              }
+              alt="review text"
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              disabled={status !== "authenticated"}
+            />
+            <button
+              type="submit"
+              disabled={isSubmitting || status !== "authenticated"}
+              className="disabled:text-gray-300 disabled:pointer-events-none"
+            >
+              <PaperAirplaneIcon className="h-8 cursor-pointer hover:scale-125 active:scale-90 transform transition duration-300 ease-out " />
+            </button>
+          </label>
+        ) : (
+          <div className="mt-5 text-xl font-bold text-red-600">
+            Sign In to Leave a Review
+          </div>
+        )}
       </form>
 
       {/* Comments Here */}
@@ -263,10 +279,12 @@ const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
                   {rating.createdAt ? rating.createdAt : "no date!"}
                 </span>
               </p>
-              <TrashIcon
-                className="h-5 text-red-500 cursor-pointer hover:scale-125 active: scale-95 transition ease-out "
-                onClick={() => handleDeleteReview(rating)}
-              />
+              {session?.user.id === rating.user.userID && (
+                <TrashIcon
+                  className="h-5 text-red-500 cursor-pointer hover:scale-125 active: scale-95 transition ease-out "
+                  onClick={() => handleDeleteReview(rating)}
+                />
+              )}
             </div>
             {showFullText[index] ? (
               <p className="text-justify">{rating.comment}</p>
@@ -279,26 +297,25 @@ const ReviewsDisplay = ({ listing, listingState, setListingState }) => {
               {/* Username - Comments */}
               <div className="mt-5 flex items-center">
                 <div className="relative w-7 h-7 overflow-hidden bg-gray-400 rounded-full ">
-                  <svg
-                    className="absolute w-9 h-9 text-gray-200 -left-1"
-                    fillRule="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                      clipRule="evenodd"
-                    ></path>
-                  </svg>
+                  <Image
+                    src={
+                      rating.user.image
+                        ? rating.user.image
+                        : "/Sample_User_Icon_WC.png"
+                    }
+                    width={32}
+                    height={32}
+                    sizes="32px"
+                    alt="user profile image"
+                  />
                 </div>
                 <p className="pl-2 text-sm">
-                  <b>{listingState.yvUser}</b>
+                  <b>{rating.user.username}</b>
                 </p>
               </div>
 
               {/* Read More */}
-              {rating.comment.length > 30 && (
+              {rating.comment.split(" ").length > 30 && (
                 <button
                   onClick={() => toggleFullText(index)}
                   className="font-bold hover:scale-105  hover:text-emerald-600 transform transition duration-300 ease-out underline pt-5 text-sm"

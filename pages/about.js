@@ -10,7 +10,7 @@ const about = () => {
         <title>Yaadventures - About</title>
       </Head>
 
-      <main className="max-w-7xl mx-auto px-32 sm:px-20 pt-14">
+      <main className="max-w-7xl mx-auto sm:px-20 pt-14">
         <div>
           <h1 className="text-4xl font-black text-center mb-20">ABOUT</h1>
         </div>
@@ -67,7 +67,9 @@ const about = () => {
           " Any adventure is welcome, as long as it is a Yaadventure! "
         </p>
       </main>
-      <Footer />
+      <div className="">
+        <Footer />
+      </div>
     </div>
   );
 };

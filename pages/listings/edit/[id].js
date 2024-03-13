@@ -18,6 +18,8 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { addDoc, serverTimestamp } from "firebase/firestore";
 import { db, listingsColRef } from "@/firebase/config";
+import { useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 //Fetch Order - ID PASSED AS PARAM in URL!
 export const getServerSideProps = async (context) => {
@@ -45,6 +47,13 @@ const maxSteps = 5;
 
 const EditListing = ({ listing }) => {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (session?.user.id !== listing.yvUser.id) {
+      router.push("/");
+    }
+  }, [status, router]);
 
   // Initialize form with existing data
   useEffect(() => {

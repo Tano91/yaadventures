@@ -5,10 +5,10 @@ const Footer = () => {
   const router = useRouter();
   return (
     <div className="bg-gray-100">
-      <div className="flex flex-col items-center lg:flex-row lg:justify-evenly px-16 lg:px-32 py-14">
+      <div className="flex flex-col items-center lg:flex-row lg:justify-evenly px-16 lg:px-32 py-4">
         <div className="text-md text-grey-800 mb-6 lg:my-0">
           <h5
-            className="font-bold cursor-pointer"
+            className="font-bold cursor-pointer hover:text-emerald-600 hover:scale-110 active:scale-95 transition ease-in-out"
             onClick={() => router.push("/about")}
           >
             ABOUT
@@ -18,7 +18,9 @@ const Footer = () => {
           className="text-md text-grey-800"
           onClick={() => router.push("/contact")}
         >
-          <h5 className="font-bold cursor-pointer">CONTACT</h5>
+          <h5 className="font-bold cursor-pointer hover:text-emerald-600 hover:scale-110 active:scale-95 transition ease-in-out">
+            CONTACT
+          </h5>
         </div>
       </div>
 

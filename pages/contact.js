@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Footer from "@/components/Footer";
+import { PhoneIcon, EnvelopeIcon } from "@heroicons/react/24/solid";
 
 const contact = () => {
   return (
@@ -10,27 +11,35 @@ const contact = () => {
         <title>Yaadventures - Contact</title>
       </Head>
 
-      <main className="max-w-7xl mx-auto px-32 sm:px-20 pt-14">
+      <main className="max-w-7xl mx-auto sm:px-20 pt-14">
         {/* Phone Section - Emojis? Too Childish? */}
         <div>
-          <h1 className="text-4xl font-black text-center mb-20">CONTACT US</h1>
+          <h1 className="text-4xl font-black text-center mb-20 text-emerald-600">
+            CONTACT US
+          </h1>
         </div>
         <div className="mb-20">
-          <div className="text-4xl text-center mb-4">📞</div>
+          <div className="text-4xl mb-4 flex justify-center items-center">
+            <PhoneIcon className="h-10 text-emerald-600" />
+          </div>
           <div className="text-xl text-center font-bold mb-2">By Phone</div>
           <div className="text-xl text-center text-gray-600">xxx-xxx-xxxx</div>
         </div>
         {/* Email Section - Emojis? Too Childish? */}
 
         <div className="mb-20">
-          <div className="text-4xl text-center mb-4">📧</div>
+          <div className="text-4xl mb-4 flex justify-center items-center">
+            <EnvelopeIcon className="h-10 text-emerald-600" />
+          </div>
           <div className="text-xl text-center font-bold mb-2 ">By Email</div>
           <div className="text-xl text-center text-gray-600">
             santanomccalla@gmail.com
           </div>
         </div>
       </main>
-      <Footer />
+      <div className="fixed bottom-0 left-0 right-0">
+        <Footer />
+      </div>
     </div>
   );
 };

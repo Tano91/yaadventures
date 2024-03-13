@@ -54,8 +54,8 @@ const InfoCard = React.memo(
     };
 
     return (
-      <div className="sm:rounded-2xl sm:flex  py-7  cursor-pointer hover:bg-emerald-50 hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
-        <div className="relative h-60 w-80 flex-shrink-0">
+      <div className="sm:rounded-2xl flex flex-col sm:flex-row py-7  cursor-pointer hover:bg-emerald-50 hover:opacity-80 hover:shadow-lg transition duration-200 ease-out first:border-t">
+        <div className="relative h-60 w-80 ml-1 sm:ml-0 flex-shrink-0">
           <Carousel
             swipeable={true}
             showThumbs={false}

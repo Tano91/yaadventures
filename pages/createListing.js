@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -17,11 +17,20 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { addDoc, serverTimestamp } from "firebase/firestore";
 import { listingsColRef } from "../firebase/config";
+import { useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 
 const maxSteps = 5;
 
 const createListing = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
+
+  useEffect(() => {
+    if (status !== "authenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
   const [formStep, setFormStep] = useState(1);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -34,7 +43,7 @@ const createListing = () => {
   const [yvRatings, setyvRatings] = useState([]);
   const [yvScore, setyvScore] = useState(0);
   const [yvFavourited, setyvFavourited] = useState([]);
-  const [yvUser, setyvUser] = useState("Admin");
+  const [yvUser, setyvUser] = useState("");
 
   const [isPending, setIsPending] = useState(false);
 
@@ -157,7 +166,11 @@ const createListing = () => {
       parish: values.parish,
       images: values.imageLinks,
 
-      yvUser,
+      yvUser: {
+        name: session?.user.name,
+        image: session?.user.image,
+        id: session?.user.id,
+      },
 
       yvScore,
       yvFavourited,
@@ -415,5 +428,22 @@ const createListing = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {}, // will be passed to the page component as props
+  };
+}
 
 export default createListing;
