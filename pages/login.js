@@ -12,11 +12,8 @@ const LoginPage = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const from = router.query.from
-      ? decodeURIComponent(router.query.from)
-      : "/";
     if (status === "authenticated") {
-      router.push(from);
+      router.push("/");
     }
   }, [status, router]);
 
@@ -24,14 +21,8 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      // Get the current page URL
-      const currentUrl = window.location.pathname + window.location.search;
-
-      // Specify the callbackUrl to redirect to after sign-in, including the current URL as a query parameter
       await signIn("google", {
-        callbackUrl: `${window.location.origin}/?from=${encodeURIComponent(
-          currentUrl
-        )}`,
+        callbackUrl: "/",
       });
     } catch (err) {
       setError(err.message);
