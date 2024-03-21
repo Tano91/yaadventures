@@ -21,14 +21,12 @@ const App = (props) => {
   const { Component, pageProps } = props;
 
   return (
-    <>
-      <SessionProvider session={pageProps.session}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </SessionProvider>
+  <SessionProvider session={pageProps.session}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
       <Analytics />
-    </>
+    </SessionProvider>
   );
 };
 
