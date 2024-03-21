@@ -22,11 +22,12 @@ const App = (props) => {
 
   return (
     <SessionProvider session={pageProps.session}>
-      <Analytics />
+      
       <Layout>
         <Component {...pageProps} />
       </Layout>
     </SessionProvider>
+    <Analytics />
   );
 };
 
