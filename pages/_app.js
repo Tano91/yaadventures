@@ -4,6 +4,7 @@ import Router from "next/router";
 import PropTypes from "prop-types";
 import Layout from "@/components/Layout";
 import { SessionProvider } from "next-auth/react";
+import { Analytics } from "@vercel/analytics/react";
 
 const progress = new ProgressBar({
   size: 4,
