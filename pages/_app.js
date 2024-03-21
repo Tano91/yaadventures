@@ -24,8 +24,8 @@ const App = (props) => {
   <SessionProvider session={pageProps.session}>
       <Layout>
         <Component {...pageProps} />
+        <Analytics />
       </Layout>
-      <Analytics />
     </SessionProvider>
   );
 };
