@@ -178,9 +178,9 @@ const listingDetails = ({ listing }) => {
         </title>
       </Head>
 
-      <div className="container pt-5 pr-5 pl-5 mx-auto flex flex-col mb-10">
+      <div className="container pt-5 pr-8 pl-8 mx-auto flex flex-col mb-10">
         {/* Image Section */}
-        <div className="container pr-2 pl-2 mx-auto flex flex-col items-center">
+        <div className="container pr-5 pl-2 mx-auto flex flex-col items-center">
           <div className="w-full">
             <ImageDisplay images={listingState.images} />
           </div>
