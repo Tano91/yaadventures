@@ -6,7 +6,7 @@ const Banner = () => {
   const router = useRouter();
 
   return (
-    <div className="relative h-[300px] sm:h-[350px] lg:h-[400px] 2xl:h-[600px]">
+    <div className="relative h-[25rem]">
       <Image
         src="/landscapebanner_1.jpg"
         priority
