@@ -27,9 +27,9 @@ const ImageGrid = ({ images }) => {
     <div className="flex flex-col md:flex-row overflow-hidden max-h-[500px]">
       {/* Main Image Logic */}
       <div
-        className={`relative w-full md:w-1/2 max-h-[400px] md:max-h-[500px] md:mr-3 ${
+        className={`relative w-full md:w-1/2 max-h-[400px] md:max-h-[500px]  ${
           imageCount > 1
-            ? "rounded-3xl md:rounded-none md:rounded-l-3xl overflow-hidden"
+            ? "rounded-3xl md:rounded-none md:rounded-l-3xl overflow-hidden md:mr-3"
             : "rounded-3xl overflow-hidden "
         }`}
       >
