@@ -20,10 +20,10 @@ const SearchPage = ({ listings }) => {
       {/* convert to 32x32 favicon */}
       <Head>
         <link rel="icon" href="/yvIcon_G.png" />
-        <title>Search - {term} </title>
+        <title>{term ? `Search - ${term}` : "Search"}</title>
       </Head>
       <main className="flex">
-        <section className="flex-grow pt-14 px-6">
+        <section className="flex-grow pt-14 px-10">
           <p className="text-xs">{filteredListings.length} Locations Listed </p>
 
           <h1 className="text-3xl mt-2 mb-6">

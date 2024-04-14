@@ -32,10 +32,17 @@ const filteredListings = ({ listings }) => {
       {/* convert to 32x32 favicon */}
       <Head>
         <link rel="icon" href="/yvIcon_G.png" />
-        <title>Yaadventures - {type === "4" ? "Highest Rated" : type} </title>
+        <title>
+          {type
+            ? type === "4"
+              ? "YaadVentures - Highest Rated"
+              : `YaadVentures ${type}`
+            : "YaadVentures"}
+        </title>
+        {/* <title>{type === "4" ? "Highest Rated" : type} </title> */}
       </Head>
       <main className="flex">
-        <section className="flex-grow pt-14 px-6">
+        <section className="flex-grow pt-14 px-10">
           <p className="text-xs">{filteredListings.length} Locations Listed </p>
 
           <h1 className="text-3xl font-semibold mt-2 mb-6">

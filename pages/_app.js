@@ -21,7 +21,7 @@ const App = (props) => {
   const { Component, pageProps } = props;
 
   return (
-  <SessionProvider session={pageProps.session}>
+    <SessionProvider session={pageProps.session}>
       <Layout>
         <Component {...pageProps} />
         <Analytics />

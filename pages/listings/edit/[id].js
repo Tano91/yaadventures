@@ -16,10 +16,9 @@ import axios from "axios";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { addDoc, serverTimestamp } from "firebase/firestore";
-import { db, listingsColRef } from "@/firebase/config";
+import { serverTimestamp } from "firebase/firestore";
+import { db } from "@/firebase/config";
 import { useSession } from "next-auth/react";
-import { getSession } from "next-auth/react";
 
 //Fetch Order - ID PASSED AS PARAM in URL!
 export const getServerSideProps = async (context) => {
@@ -186,18 +185,18 @@ const EditListing = ({ listing }) => {
             },
           });
 
-          if (response.status === 200) {
-            toast.success(`Image ${e} deleted successfully!`, {
-              position: "top-center",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            });
-          }
+          // if (response.status === 200) {
+          //   toast.success(`Image ${e} deleted successfully!`, {
+          //     position: "top-center",
+          //     autoClose: 5000,
+          //     hideProgressBar: false,
+          //     closeOnClick: true,
+          //     pauseOnHover: true,
+          //     draggable: true,
+          //     progress: undefined,
+          //     theme: "dark",
+          //   });
+          // }
         } catch (error) {
           toast.error(`Could Not Delete Image ${e}! Try Again!`, {
             position: "top-center",

@@ -24,7 +24,7 @@ const ImageGrid = ({ images }) => {
   const imageCount = images.length;
 
   return (
-    <div className="flex flex-col md:flex-row overflow-hidden max-h-[450px]">
+    <div className="flex flex-col md:flex-row overflow-hidden max-h-[500px]">
       {/* Main Image Logic */}
       <div
         className={`relative w-full md:w-1/2 max-h-[400px] md:max-h-[500px] md:mr-3 ${
@@ -39,7 +39,7 @@ const ImageGrid = ({ images }) => {
           width={500}
           height={500}
           style={{ objectFit: "cover", height: "auto", width: "100%" }}
-          sizes="500px"
+          sizes="450px"
           priority
           className=""
         />
@@ -71,7 +71,7 @@ const ImageGrid = ({ images }) => {
       {/* Only render this div if there are more than one images */}
       {imageCount > 1 && (
         <div
-          className={`w-1/2 grid ${
+          className={`grid ${
             imageCount === 2 ? "grid-cols-1 gap-3" : "grid-cols-2 gap-3"
           }`}
         >
@@ -79,14 +79,15 @@ const ImageGrid = ({ images }) => {
             .filter((_, index) => index !== currentIndex)
             .slice(0, 4)
             .map((image, index) => (
-              <div key={index} className={`w-full h-full hidden md:inline  `}>
+              <div key={index} className={`w-full h-full hidden md:inline`}>
                 <Image
                   key={index}
                   src={image}
                   alt={`Thumbnail ${index}`}
-                  width={250}
-                  height={250}
-                  style={{ objectFit: "cover", width: "auto", height: "100%" }}
+                  width={500}
+                  height={500}
+                  style={{ objectFit: "cover", height: "100%", width: "auto" }}
+                  sizes="450px"
                   priority
                   className={`w-full h-full hidden md:inline  ${
                     index === 1 || imageCount === 2
