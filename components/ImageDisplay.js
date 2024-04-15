@@ -39,7 +39,6 @@ const ImageGrid = ({ images }) => {
           width={500}
           height={500}
           style={{ objectFit: "cover", height: "auto", width: "100%" }}
-          sizes="20rem"
           priority
           className=""
         />
@@ -87,7 +86,6 @@ const ImageGrid = ({ images }) => {
                   width={450}
                   height={450}
                   style={{ objectFit: "cover" }}
-                  sizes="20rem"
                   priority
                   className={`w-full h-full hidden md:inline  ${
                     index === 1 || imageCount === 2
