@@ -24,10 +24,10 @@ const ImageGrid = ({ images }) => {
   const imageCount = images.length;
 
   return (
-    <div className="flex flex-col md:flex-row overflow-hidden max-h-[500px]">
+    <div className="flex flex-col md:flex-row overflow-hidden max-h-[25rem] rounded-3xl">
       {/* Main Image Logic */}
       <div
-        className={`relative w-full md:w-1/2 max-h-[400px] md:max-h-[500px]  ${
+        className={`relative w-full md:w-1/2 max-h-[25rem]  ${
           imageCount > 1
             ? "rounded-3xl md:rounded-none md:rounded-l-3xl overflow-hidden md:mr-3"
             : "rounded-3xl overflow-hidden "
@@ -39,14 +39,14 @@ const ImageGrid = ({ images }) => {
           width={500}
           height={500}
           style={{ objectFit: "cover", height: "auto", width: "100%" }}
-          sizes="450px"
+          sizes="20rem"
           priority
           className=""
         />
         {/* Render Buttons Conditionally */}
         {imageCount > 1 && (
           <div
-            className={`absolute top-10 bottom-10 left-0  items-center w-full p-2 z-10 flex  ${
+            className={`absolute top-10 bottom-10 left-0 items-center w-full p-2 z-10 flex  ${
               currentIndex === 0 ? " justify-end" : " justify-between"
             }`}
           >
@@ -71,7 +71,7 @@ const ImageGrid = ({ images }) => {
       {/* Only render this div if there are more than one images */}
       {imageCount > 1 && (
         <div
-          className={`grid ${
+          className={`w-1/2 grid ${
             imageCount === 2 ? "grid-cols-1 gap-3" : "grid-cols-2 gap-3"
           }`}
         >
@@ -84,10 +84,10 @@ const ImageGrid = ({ images }) => {
                   key={index}
                   src={image}
                   alt={`Thumbnail ${index}`}
-                  width={500}
-                  height={500}
-                  style={{ objectFit: "cover", height: "100%", width: "auto" }}
-                  sizes="450px"
+                  width={450}
+                  height={450}
+                  style={{ objectFit: "cover" }}
+                  sizes="20rem"
                   priority
                   className={`w-full h-full hidden md:inline  ${
                     index === 1 || imageCount === 2

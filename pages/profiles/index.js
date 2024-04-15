@@ -22,7 +22,7 @@ const handleDeleteUserData = async () => {
 const profiles = () => {
   return (
     <>
-      <div className="p-4">
+      <div className="max-w-7xl mx-auto px-8 sm:px-16">
         <h1 className="text-2xl font-bold mb-4">Profile</h1>
         <DeleteAccountModal onConfirm={() => handleDeleteUserData(user.id)} />
       </div>

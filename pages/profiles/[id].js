@@ -44,6 +44,11 @@ function ProfilePage({ user }) {
 
       <div className="container pt-5 pr-2 pl-2 mx-auto flex flex-col mb-20">
         <div className="container pr-2 pl-2 mx-auto flex flex-col items-center">
+          <p className="pt-5 pb-5 text-red-600 font-bold italic text-sm">
+            This Page is Still Under Construction! Functionality will be added
+            Soon! If you have any issues please email me at:{" "}
+            <span className="text-black">santanomccalla@gmail.com</span>
+          </p>
           <div className="flex flex-col items-center">
             {status === "authenticated" && user.id === session.user.id ? (
               <>
@@ -84,14 +89,14 @@ function ProfilePage({ user }) {
             )}
           </div>
           <div className="mt-10 flex space-x-20">
-            <p className="flex flex-col justify-center items-center text-orange-500 cursor-pointer hover:text-orange-600 hover:scale-110 transform transition duration-300 ease-out">
-              <PencilSquareIcon className="h-8 " />
+            <div className="flex flex-col justify-center items-center cursor-pointer hover:text-emerald-600 hover:scale-110 transform transition duration-300 ease-out active:scale-95">
+              <PencilSquareIcon className="h-8" />
               <p className="font-bold">Edit Profile</p>
-            </p>
-            <p className="flex flex-col justify-center items-center text-red-600 cursor-pointer hover:text-red-700 hover:scale-110 transform transition duration-300 ease-out">
+            </div>
+            <div className="flex flex-col justify-center items-center cursor-pointer hover:text-red-700 hover:scale-110 transform transition duration-300 ease-out active:scale-95">
               <TrashIcon className="h-8 " />
               <p className="font-bold">Delete Profile</p>
-            </p>
+            </div>
           </div>
         </div>
       </div>

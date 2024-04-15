@@ -23,7 +23,7 @@ const SearchPage = ({ listings }) => {
         <title>{term ? `Search - ${term}` : "Search"}</title>
       </Head>
       <main className="flex">
-        <section className="flex-grow pt-14 px-10">
+        <section className="flex-grow pt-14 max-w-7xl mx-auto px-8 sm:px-16">
           <p className="text-xs">{filteredListings.length} Locations Listed </p>
 
           <h1 className="text-3xl mt-2 mb-6">
